@@ -1,1 +1,2 @@
 *.tex text eol=crlf
+*.cls text eol=crlf
