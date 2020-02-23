@@ -68,6 +68,8 @@ There are many solutions available on the market to simulate networks. Popular n
 
 VIRL (Cisco Virtual Internet Routing Lab) is a network modeling and simulation environment provided by Cisco which offers the ability to use simulation models of real Cisco platforms, integrate virtual machines and connect real networks. Furthermore it provides a RESTful API to configure networks without a graphical interface, sufficient documentation and scalability as well as easy deployment through prepared images. It is not for free and only supports VMware or bare-metal installs. Simulation models of other vendors are not supported. Tests in virtual machines unveiled a good responsiveness but a long topology loading time with high CPU load. Fig.~\ref{virl} shows a sample network topology created via the graphical user interface of VIRL.  \cite{b1} \cite{b3}
 
+\newpage
+
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.13]{gns3.png}}
 \caption{Sample network topology in GNS3 \cite{b4}}
@@ -108,7 +110,7 @@ This means we are ready to create system environments on our host or in the clou
 
 Vagrant supports multiple provisioners like Ansible, Terraform or simple bash scripts to configure the host systems and can also be setup through them. For the beginning we will use Ansible through Vagrant to configure the host system. Vagrant can setup multiple virtual machines or Docker containers on one host. If we would need to setup machines on multiple hosts we will come back to tools like Terraform for example. \cite{b9}
 
-If all the possible network scenarios are defined - this was the scope of another paper - this network topologies have to be deployed through our deployment system consisting of Vagrant and Ansible. This means we will define the basic host setup and the network configurations for all the scenarios in Ansible templates which could be later adjusted via command line parameters. The topology can then be deployed by executing a shell command. This includes the deployment of the network recorder and the data extractor. In other words one or multiple scenarios can be started and connected to one recorder and data extractor to combine simultanuous attacks and everything will be deployed through a shell command with static configuration in templates and dynamic configuration with command line options. It will be also possible to integrate real hardware into the simulation.
+If all the possible network scenarios are defined these network topologies have to be deployed through our deployment system consisting of Vagrant and Ansible. This means we will define the basic host setup and the network configurations for all the scenarios in Ansible templates which could be later adjusted via command line parameters. The topology can then be deployed by executing a shell command. This includes the deployment of the network recorder and the data extractor. In other words one or multiple scenarios can be started and connected to one recorder and data extractor to combine simultanuous attacks and everything will be deployed through a shell command with static configuration in templates and dynamic configuration with command line options. It will be also possible to integrate real hardware into the simulation.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.28]{design_flow.png}}
