@@ -136,7 +136,7 @@ There also exists a large number of techniques for dimensionality reduction. The
 	\item Stepwise regression
 \end{itemize}
 
-Other methods which can be used for that purpose are based on association rule mining (ARM) \cite{moustafa2015}, sequential forward selection (SFS) \cite{dehghani2010, xu2015}, or the T-test \cite{sopuru2019}, 
+Other methods which can be used for that purpose are based on association rule mining (ARM) \cite{moustafa2015}, sequential forward selection (SFS) \cite{dehghani2010} \cite{xu2015}, or the T-test \cite{sopuru2019}, 
 
 When selecting the features, their limitations should be considered as well. Some features can easily be spoofed by attackers, while others are unable to detect encrypted malware traffic or cause performance problems. The development of new evasion techniques (e.g., disguising malicious traffic in widely used protocols such as HTTP) make the detection even harder \cite{celik2015}.
 
@@ -146,27 +146,27 @@ Another aspect which has been examined is the stability of features in terms of 
 
 A common approach is to group packets into flows, and then calculate statistical features based on these flows. Generally, a flow is a group of packets with the same source and destination IP addresses and ports, as well as protocol \cite{brownlee1998}. However, a flow can also be terminated by a TCP FIN packet or a timeout \cite{Ids2018}. Statistical features of network flows include the following:
 \begin{itemize}
-	\item Flow duration \cite{Nb2015, Ids2018}
+	\item Flow duration \cite{Nb2015} \cite{Ids2018}
 	\item Time between two flows or packets \cite{Ids2018}
 	\item Time between SYN and SYN/ACK, and between SYN/ACK and ACK packets during TCP connection setup \cite{Nb2015}
 	\item Active time before a flow becomes idle and vice versa \cite{Ids2018}
 	\item Jitter \cite{Nb2015}
-	\item Number of packets in total, with at least 1 byte of payload, or with certain protocol flags \cite{Ids2018, waizumi2007, celik2015}
+	\item Number of packets in total, with at least 1 byte of payload, or with certain protocol flags \cite{Ids2018} \cite{waizumi2007} \cite{celik2015}
 	\item Number of fragmented packets \cite{waizumi2007}
 	\item Number of retransmitted or dropped packets \cite{Nb2015}
-	\item Size of packets, payload, headers or segments \cite{Ids2018, celik2015}
-	\item Number of bytes/packets transferred per second, in bulk, or in the initial TCP window \cite{Ids2018, celik2015}
+	\item Size of packets, payload, headers or segments \cite{Ids2018} \cite{celik2015}
+	\item Number of bytes/packets transferred per second, in bulk, or in the initial TCP window \cite{Ids2018} \cite{celik2015}
 	\item Number of RTT samples \cite{celik2015}
 	\item Time to live value \cite{Nb2015}
 	\item TCP window advertisement value \cite{Nb2015}
 	\item TCP base sequence number \cite{Nb2015}
 	\item Ratio between download and upload \cite{Ids2018}
 	\item Ratio between maximum and minimum packet size \cite{celik2015}
-	\item Number of flows with the current flow's IP address or port number \cite{waizumi2007, Nb2015}
+	\item Number of flows with the current flow's IP address or port number \cite{waizumi2007} \cite{Nb2015}
 \end{itemize}
-Most of these features can be derived by statistical calculations such as total, minimum, maximum, mean, median, standard deviation, variance, skewness and kurtosis \cite{Ids2018, celik2015, xu2015}. Also, the features can be extracted from bidirectional flows, or separately for forward and backward directions \cite{Ids2018}.
+Most of these features can be derived by statistical calculations such as total, minimum, maximum, mean, median, standard deviation, variance, skewness and kurtosis \cite{Ids2018} \cite{celik2015, xu2015}. Also, the features can be extracted from bidirectional flows, or separately for forward and backward directions \cite{Ids2018}.
 
-The open-source Java software CICFlowMeter can be used to extract features of network flows (which end either by TCP FIN packet, or a configurable timeout) from pcap files. It allows to select from a list of available features, but can also be extended to support new features \cite{cicflowmeter}, and has therefore been used in various applications \cite{Ids2018, lashkari2017, sopuru2019}.
+The open-source Java software CICFlowMeter can be used to extract features of network flows (which end either by TCP FIN packet, or a configurable timeout) from pcap files. It allows to select from a list of available features, but can also be extended to support new features \cite{cicflowmeter}, and has therefore been used in various applications \cite{Ids2018} \cite{lashkari2017} \cite{sopuru2019}.
 
 \begin{figure}[htpb]
 \centerline{\includegraphics[scale=0.35]{hast-ids.png}}
@@ -229,7 +229,7 @@ The previous sections examined different features which can be extracted from ne
 
 \subsection*{Label definition}
 
-In addition to the feature vectors, datasets to be used for supervised learning need to include labels. For the purpose of intrusion detection, each record (e.g., network flow) has to be labelled  binary as benign or malicious traffic, or nominally to distinguish between certain attack types. For example, the UNSW-NB15 dataset defines a binary label (0 for normal and 1 for attack) and a nominal label ("Normal" for benign traffic and "Fuzzers", "Analysis", "Backdoors", "DoS", "Exploits", "Generic", "Reconnaissance", "Shellcode" or "Worms" for the various attack types) \cite{Nb2015}. For some applications, there may also be a nominal label for benign traffic (e.g., browsing, chat, mail, P2P, streaming, VoIP) \cite{lashkari2017, bagui2017}.
+In addition to the feature vectors, datasets to be used for supervised learning need to include labels. For the purpose of intrusion detection, each record (e.g., network flow) has to be labelled  binary as benign or malicious traffic, or nominally to distinguish between certain attack types. For example, the UNSW-NB15 dataset defines a binary label (0 for normal and 1 for attack) and a nominal label ("Normal" for benign traffic and "Fuzzers", "Analysis", "Backdoors", "DoS", "Exploits", "Generic", "Reconnaissance", "Shellcode" or "Worms" for the various attack types) \cite{Nb2015}. For some applications, there may also be a nominal label for benign traffic (e.g., browsing, chat, mail, P2P, streaming, VoIP) \cite{lashkari2017} \cite{bagui2017}.
 
 For data generated by simulating attacks, the labels can simply be based on the schedule of simulated attacks in combination with the IP addresses, ports and protocols involved \cite{Ids2018}.
 
