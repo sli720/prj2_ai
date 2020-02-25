@@ -126,6 +126,115 @@ A real test case would then consist of multiple scenarios of attacks and usual n
 
 \section{Data Extraction}
 
+Datasets for intrusion detection are often based on network packet data captured by sniffers, which can be stored in pcap files (as done in the UNSW-NB15 \cite{Nb2015} and CSE-CIC-IDS2018 \cite{Ids2018} datasets). Before a machine learning algorithm can be employed, features have to be extracted from the captured data. A wide range of different features is described in literature. For the sake of clarity, these features are divided into groups which are described in the following subsections.
+
+There also exists a large number of techniques for dimensionality reduction. The 40 features of the NSL-KDD data set could be reduced to 30 or 16 features, with no or low degradation in detection power. The benefits of a reduced feature set are faster processing, less memory consumption, and in some cases even higher detection precision, because some classifiers have problems with irrelevant or correlated features. This could be achieved by combining the following methods \cite{vasquez2015}:
+\begin{itemize}
+	\item Weight by maximum relevance
+	\item Minimum redundancy maximum relevance
+	\item Significance analysis for microarrays
+	\item Least absolute selection and shrinkage operator
+	\item Stability selection
+	\item Stepwise regression
+\end{itemize}
+
+Other methods which can be used for that purpose are based on association rule mining (ARM) \cite{moustafa2015}, sequential forward selection (SFS) \cite{dehghani2010} \cite{xu2015}, or the T-test \cite{sopuru2019}, 
+
+When selecting the features, their limitations should be considered as well. Some features can easily be spoofed by attackers, while others are unable to detect encrypted malware traffic or cause performance problems. The development of new evasion techniques (e.g., disguising malicious traffic in widely used protocols such as HTTP) make the detection even harder \cite{celik2015}.
+
+Another aspect which has been examined is the stability of features in terms of time (year 2000/2001 vs. 2008) and location (Internet core vs. Internet edge). In this regard, the packet size can be considered as stable feature \cite{este2009}. The suitability of features also depends on the type of network which is analyzed. For example, some industrial control system networks are relatively static regarding IP address allocation, the number of open connections and the ports, protocols and settings they use. Therefore, features based on these attributes may provide good results in that particular environment \cite{mantere2013}.
+
+\subsection{Flow statistical features}
+
+A common approach is to group packets into flows, and then calculate statistical features based on these flows. Generally, a flow is a group of packets with the same source and destination IP addresses and ports, and the same protocol \cite{brownlee1998}. However, a flow can also be terminated by a TCP FIN packet or a timeout \cite{Ids2018}. Statistical features of network flows include the following:
+\begin{itemize}
+	\item Flow duration \cite{Nb2015} \cite{Ids2018}
+	\item Time between two flows or packets \cite{Ids2018}
+	\item Time between SYN and SYN/ACK, and between SYN/ACK and ACK packets during TCP connection setup \cite{Nb2015}
+	\item Active time before a flow becomes idle and vice versa \cite{Ids2018}
+	\item Jitter \cite{Nb2015}
+	\item Number of packets in total, with at least 1 byte of payload, or with certain protocol flags \cite{Ids2018} \cite{waizumi2007} \cite{celik2015}
+	\item Number of fragmented packets \cite{waizumi2007}
+	\item Number of retransmitted or dropped packets \cite{Nb2015}
+	\item Size of packets, payload, headers or segments \cite{Ids2018} \cite{celik2015}
+	\item Number of bytes/packets transferred per second, in bulk, or in the initial TCP window \cite{Ids2018} \cite{celik2015}
+	\item Number of RTT samples \cite{celik2015}
+	\item Time to live value \cite{Nb2015}
+	\item TCP window advertisement value \cite{Nb2015}
+	\item TCP base sequence number \cite{Nb2015}
+	\item Ratio between download and upload \cite{Ids2018}
+	\item Ratio between maximum and minimum packet size \cite{celik2015}
+	\item Number of flows with the current flow's IP address or port number \cite{waizumi2007} \cite{Nb2015}
+\end{itemize}
+Most of these features can be derived by statistical calculations such as total, minimum, maximum, mean, median, standard deviation, variance, skewness and kurtosis \cite{Ids2018} \cite{celik2015, xu2015}. Also, the features can be extracted from bidirectional flows, or separately for forward and backward directions \cite{Ids2018}.
+
+The open-source Java software CICFlowMeter can be used to extract features of network flows (which end either by TCP FIN packet, or a configurable timeout) from pcap files. It allows to select from a list of available features, but can also be extended to support new features \cite{cicflowmeter}, and has therefore been used in various applications \cite{Ids2018} \cite{lashkari2017} \cite{sopuru2019}.
+
+\begin{figure}[htpb]
+\centerline{\includegraphics[scale=0.35]{hast-ids.png}}
+\caption{Feature learning process of HAST-IDS \cite{wang2018}}
+\label{hast-ids}
+\end{figure}
+
+The hierarchical spatial-temporal feature-based intrusion detection system (HAST-IDS), which is shown in fig.~\ref{hast-ids}, also extracts flow-based features. However, it first transforms the bytes of network flows (HAST-I) or packets (HAST-II) into images using one-hot encoding (OHE), and then uses deep convolutional neural networks (CNNs) and long short-term memory (LSTM) networks to learn features based on these images \cite{wang2018}.
+
+\subsection{Timeslot features}
+
+Timeslot features are extracted by counting the number of certain events in fixed time intervals. For the detection of DoS and probing traffic, the following timeslot features are proposed \cite{waizumi2007}:
+\begin{itemize}
+	\item Number of TCP, UDP and ICMP packets
+	\item Number of bytes sent and received through all TCP connections
+	\item Number of TCP ports
+	\item Number of occurences of TCP flags
+	\item Number of DNS packets
+	\item Number of fragmented packets
+	\item Number of values of the four fields of IP addresses
+\end{itemize}
+
+\subsection{Behavioral features}
+
+A different approach is to define features which measure specific behavioral differences between benign and malicious software.
+
+One system following that approach is called "traffic aggregation for malware detection". It defines three characteristics which can be combined to distinguish between benign and malware traffic \cite{yen2011}:
+\begin{itemize}
+	\item Common destinations (assuming that compromised systems contact different hosts than uncompromised systems)
+	\item Similar payload (assuming that command-and-control traffic uses common protocol syntax)
+	\item Common software platforms (assuming that malware usually relies upon a specific operating system and also specific applications, such as web browsers)
+\end{itemize}
+
+The UNSW-NB15 datasets contains mostly flow statistical features, but also a few features based on behavior \cite{Nb2015}:
+\begin{itemize}
+	\item A binary value denoting if the source and destination IP addresses and port numbers are equal
+	\item Service (HTTP, FTP, SMTP, SSH, DNS, or IRC)
+	\item Pipelined depth into the connection of HTTP request/response transaction
+	\item Actual uncompressed content size of the data transferred from the server's HTTP service
+	\item Number of flows containing HTTP GET and POST methods
+	\item A binary value denoting if a FTP session is accessed by user and password
+	\item Number of flows containing FTP commands
+\end{itemize}
+
+Reference \cite{li2013} lists the following features which can be used for detecting communication with known and unknown botnets:
+\begin{itemize}
+	\item Accessing the main and backup DNS server at the same time (benign software would only access the backup DNS server if the main DNS server is not available)
+	\item Resolving a specific domain name periodically
+	\item Accessing a fast-flux service network (FFSN)
+	\item Downloading malicious binary code (which can be checked using antivirus software)
+	\item Scanning for open ports
+	\item Periodically creating null TCP connections (zero TCP window or IRC PING/PONG connections which are used for contacting the command and control server)
+\end{itemize}
+
+Similarily, the character code distribution of payloads can be used to detect buffer overflow traffic (where some character codes have exceptionally high frequency) \cite{waizumi2007}.
+
+\subsection{Host-based features}
+
+The previous sections examined different features which can be extracted from network traffic, but there are also host-based data which can be used for intrusion detection. These include operating system event logs \cite{Ids2018} and other log files (e.g., firewall, mail and FTP logs) \cite{abad2003}.
+
+\subsection*{Label definition}
+
+In addition to the feature vectors, datasets to be used for supervised learning need to include labels. For the purpose of intrusion detection, each record (e.g., network flow) has to be labelled  binary as benign or malicious traffic, or nominally to distinguish between certain attack types. For example, the UNSW-NB15 dataset defines a binary label (0 for normal and 1 for attack) and a nominal label ("Normal" for benign traffic and "Fuzzers", "Analysis", "Backdoors", "DoS", "Exploits", "Generic", "Reconnaissance", "Shellcode" or "Worms" for the various attack types) \cite{Nb2015}. For some applications, there may also be a nominal label for benign traffic (e.g., browsing, chat, mail, P2P, streaming, VoIP) \cite{lashkari2017} \cite{bagui2017}.
+
+For data generated by simulating attacks, the labels can simply be based on the schedule of simulated attacks in combination with the IP addresses, ports and protocols involved \cite{Ids2018}.
+
 \begin{thebibliography}{00}
 \bibitem{b1} CBT Nuggets Blog (2020). 5 Best Network Simulators for Cisco Exams: CCNA, CCNP, CCIE. [online] Available at: \newline\url{https://www.cbtnuggets.com/blog/career/career-progression/5-best-network-simulators-for-cisco-exams-ccna-ccnp-and-ccie} [Accessed 22 Feb. 2020].
 \bibitem{b2} Network Computing. (2020). Cisco VIRL: More Than A Certification Study Lab. [online] Available at: \url{https://www.networkcomputing.com/networking/cisco-virl-more-certification-study-lab} [Accessed 22 Feb. 2020].
@@ -136,7 +245,27 @@ A real test case would then consist of multiple scenarios of attacks and usual n
 \bibitem{b7} Eve-ng.net. (2020). EVE-NG API. [online] Available at: \url{https://www.eve-ng.net/index.php/documentation/howtos/how-to-eve-ng-api/} [Accessed 22 Feb. 2020].
 \bibitem{b8} SOSC-2018. (2020). Docker. [online] Available at: \url{https://dodas-ts.github.io/SOSC-2018/docker.html} [Accessed 22 Feb. 2020].
 \bibitem{b9} Chan, M. (2020). 15 Infrastructure as Code Tools to Automate Deployments - Thorn Tech. [online] Thorn Technologies. Available at: \url{https://www.thorntech.com/2018/04/15-infrastructure-as-code-tools/} [Accessed 22 Feb. 2020].
+\bibitem{Nb2015} Moustafa, N. (2015). The UNSW-NB15 Dataset Description. [online] Available at: \url{https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/} [Accessed 22 Feb. 2020]
+\bibitem{Ids2018} Communications Security Establishment (CSE) and Canadian Institute for Cybersecurity (CIC) (2018). CSE-CIC-IDS2018 on AWS. [online] Available at: \url{https://www.unb.ca/cic/datasets/ids-2018.html} [Accessed 22 Feb. 2020].
+\bibitem{vasquez2015} Vázquez Iglesias, F. and Zseby, T. (2015). Analysis of network traffic features for anomaly detection. Machine Learning, vol. 101, 2015.
+\bibitem{moustafa2015} Moustafa, N. and Slay, J. (2015). The significant features of the UNSW-NB15 and the KDD99 data sets for Network Intrusion Detection Systems. 2015 4th International Workshop on Building Analysis Datasets and Gathering Experience Returns for Security (BADGERS), Kyoto, pp. 25-31, 2015.
+\bibitem{dehghani2010} Dehghani, F. and Movahhedinia, N. and Khayyambashi, M. R. and Kianian, S. (2010). Real-time traffic classification based on statistical and payload content features. 2010 2nd International Workshop on Intelligent Systems and Applications, Wuhan, pp. 1-4, 2010.
+\bibitem{xu2015} Xu, M. and Zhu, W. and Xu, J. and Zheng, N. (2015). Towards selecting optimal features for flow statistical based network traffic classification. APNOMS 2015 - pp. 479–482, 08 2015.
+\bibitem{sopuru2019} Sopuru, J. and Sari, A. and Akkaya, M. (2019). Modeling a malware detection and categorization system based on seven network flow-based features. International Journal of Innovative Technology and Exploring Engineering (IJITEE), vol. 8(7), pp. 2982-2989, 05 2019
+\bibitem{celik2015} Celik, Z. Berkay and Walls, R. J. and McDaniel, P. and Swami, A. (2015). Malware traffic detection using tamper resistant features. MILCOM 2015 - 2015 IEEE Military Communications Conference, pp. 330–335, Oct 2015.
+\bibitem{este2009} Este, A. and Gringoli, F. and Salgarelli, L. (2009). On the stability of the information carried by traffic flow features at the packet level. SIGCOMM Comput. Commun. Rev., vol. 39, p. 13–18, June 2009.
+\bibitem{mantere2013} Mantere, M. and Sailio, M. and Noponen, S. (2013). Network traffic features for anomaly detection in specific industrial control system network. Future Internet, vol. 5, pp. 460-473, 2013
+\bibitem{brownlee1998} Brownlee, N. (1998). Network management and realtime traffic flowmeasurement. J. Netw. Syst. Manage., vol. 6, pp. 223–228, June 1998.
+\bibitem{waizumi2007} Waizumi, Y. and Sato, Y. and Nemoto, Y. (2007). A network-based anomaly detection system using multiple network features. Proceedings of the Third International Conference on Web Information Systems and Technologies - Internet Technology, pp. 410-413, 2007.
+\bibitem{cicflowmeter} Canadian Institute for Cybersecurity (CIC) (2016). Applications | Research | Canadian Institute for Cybersecurity | UNB. [online] Available at: \url{https://www.unb.ca/cic/research/applications.html#CICFlowMeter} [Accessed 24 Feb. 2020].
+\bibitem{lashkari2017} Lashkari, A. H. and Gil, G. D. and Mamun, M. S. I. and Ghorbani, A. A. (2017). Characterization of tor traffic using time based features. Proceedings of the 3rd International Conference on Information Systems Security and Privacy (ICISSP 2017), pp. 253-262, 2017.
+\bibitem{wang2018} Wang, W. and Sheng, Y. and Wang, J. and and Zeng, X. and Ye, X. and Huang, Y. and Zhu, M. (2018). HAST-IDS: Learning hierarchical spatial-temporal features Using deep neural networks to improve intrusion detection. IEEE Access, vol. 6, pp. 1792-1806, 2018.
+\bibitem{yen2011} Yen, T. (2011). Detecting stealthy malware using behavioral features in network traffic. PhD thesis, Carnegie Mellon University, 2011.
+\bibitem{li2013} Li, W. M and Xie, S. L. and Luo, J. and Zhu, X. D. (2013). A detection method for botnet based on behavior features. Advanced Information and Computer Technology in Engineering and Manufacturing, Environmental Engineering, vol. 765 of Advanced Materials Research, pp. 1512–1517, Trans Tech Publications Ltd, 10 2013.
+\bibitem{abad2003} Abad, C. and Taylor, J. and Sengul, C.  and Yurcik, W. and Zhou, Y. and Rowe, K. (2003). Log correlation for intrusion detection: a proof of concept. 19th Annual Computer Security Applications Conference, 2003. Proceedings., pp. 255–264, Dec 2003.
+\bibitem{bagui2017} Bagui, S. and Fang, X. and Kalaimannan, E. and Bagui, S. C. and Sheehan, J. (2017). Comparison of machine-learning algorithms for classification of vpn network traffic flow using time-related features. Journal of Cyber Security Technology, vol. 1, no. 2, pp. 108–126, 2017.
 \end{thebibliography}
+
 \vspace{12pt}
 \color{red}
 \end{document}
