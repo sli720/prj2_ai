@@ -126,7 +126,7 @@ A real test case would then consist of multiple scenarios of attacks and usual n
 
 Datasets for intrusion detection are often based on network packet data captured by sniffers, which can be stored in pcap files (as done in the UNSW-NB15 \cite{Nb2015} and CSE-CIC-IDS2018 \cite{Ids2018} datasets). Before a machine learning algorithm can be employed, features have to be extracted from the captured data. A wide range of different features is described in literature. For the sake of clarity, these features are divided into groups which are described in the following subsections.
 
-There also exists a large number of techniques for dimensionality reduction. The 40 features of the NSL-KDD data set could be reduced to 30 or 16 features, with no or low degradation in detection power, while highly reducing computation costs, by combining the following methods \cite{vasquez2014}:
+There also exists a large number of techniques for dimensionality reduction. The 40 features of the NSL-KDD data set could be reduced to 30 or 16 features, with no or low degradation in detection power. The benefits of a reduced feature set are faster processing, less memory consumption, and in some cases even higher detection precision, because some classifiers have problems with irrelevant or correlated features. This could be achieved by combining the following methods \cite{vasquez2014}:
 \begin{itemize}
 	\item Weight by maximum relevance
 	\item Minimum redundancy maximum relevance
@@ -140,11 +140,11 @@ Other methods which can be used for that purpose are based on association rule m
 
 When selecting the features, their limitations should be considered as well. Some features can easily be spoofed by attackers, while others are unable to detect encrypted malware traffic or cause performance problems. The development of new evasion techniques (e.g., disguising malicious traffic in widely used protocols such as HTTP) make the detection even harder \cite{celik2015}.
 
-Another aspect which has been examined is the stability of features in terms of time (year 2000/2001 vs. 2008) and location (Internet core vs. Internet edge). In this regard, the packet size can be considered as stable feature \cite{este2009}. The suitability of features also depends on the type of network which is analyzed. For example, industrial control system networks are relatively static regarding IP address and port allocation, protocols and settings used, and number of connections, therefore features based on these attributes may provide good results in that particular environment \cite{mantere2013}.
+Another aspect which has been examined is the stability of features in terms of time (year 2000/2001 vs. 2008) and location (Internet core vs. Internet edge). In this regard, the packet size can be considered as stable feature \cite{este2009}. The suitability of features also depends on the type of network which is analyzed. For example, some industrial control system networks are relatively static regarding IP address allocation, the number of open connections and the ports, protocols and settings they use. Therefore, features based on these attributes may provide good results in that particular environment \cite{mantere2013}.
 
 \subsection{Flow statistical features}
 
-A common approach is to group packets into flows, and then calculate statistical features based on these flows. Generally, a flow is a group of packets with the same source and destination IP addresses and ports, as well as protocol \cite{brownlee1998}. However, a flow can also be terminated by a TCP FIN packet or a timeout \cite{Ids2018}. Statistical features of network flows include the following:
+A common approach is to group packets into flows, and then calculate statistical features based on these flows. Generally, a flow is a group of packets with the same source and destination IP addresses and ports, and the same protocol \cite{brownlee1998}. However, a flow can also be terminated by a TCP FIN packet or a timeout \cite{Ids2018}. Statistical features of network flows include the following:
 \begin{itemize}
 	\item Flow duration \cite{Nb2015} \cite{Ids2018}
 	\item Time between two flows or packets \cite{Ids2018}
