@@ -30,7 +30,7 @@ cs19m020@technikum-wien.at}
 \maketitle
 
 \begin{abstract}
-Supervised learning in artificial intelligence requires a training dataset that is already labeled. Doing so with network packets is a challenge due to the fact that even Intrusion Detection System are not always correct with their guessing. To overcome this problem it is necessary to generate malicious and benign packets and label them accordingly. To increase the quality of the dataset the ip addresses from the machines should not remain the same for all of the data and the malicious and benign traffic should be mixed.
+Supervised learning in artificial intelligence requires a training dataset that is already labeled. Doing so with network packets is a challenge due to the fact that even Intrusion Detection Systems are not always correct with their guessing. To overcome this problem it is necessary to generate malicious and benign packets and label them accordingly. To increase the quality of the dataset the IP addresses from the machines should not remain the same for all of the data and the malicious and benign traffic should be mixed.
 
 \end{abstract}
 
@@ -39,7 +39,7 @@ artificial intelligence, neuronal networks, computer networks, network security,
 \end{IEEEkeywords}
 
 \section{Introduction}
-Generating network traffic that can be used to train a neuronal network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic are available in the Internet each with their own advantages and disadvantages and generating realistic network traffic that contains that does not get mislabeled by intrusion detection systems just to name a few. 
+Generating network traffic that can be used to train a neuronal network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic are available in the Internet each with their own advantages and disadvantages and generating realistic network traffic that does not get mislabeled by intrusion detection systems just to name a few. 
 
 This paper is split into three chapters. The first chapter explains the different kinds of attacks and their targets. The second chapter focuses on tools to generate malicious traffic. The third chapter addresses the problem of generating useful network traffic.
 
@@ -55,7 +55,16 @@ In order to fulfil the task, it initially appears necessary to describe typical 
 
 \subsection{Classifying attacks}
 
-\medskip Basically, there are too many different cyber-attack methods to mention all of them. Therefore, various approaches exist in the literature to classify attacks into different groups. One way is to split attacks into active and passive ones \cite{b3,b4}.  In the case of passive attacks, attempts are not made to manipulate data in network traffic, but rather to eavesdrop and collect sensitive information. The opposite is the case with active attacks, which attempt to manipulate network packets, for example \cite{b4}.  Further approaches exist such as classifying into internal and external attacks, or classifying attacks based on the underlying OSI-layer.
+\medskip Basically, there are too many different cyber-attack methods to mention all of them. Therefore, various approaches exist in the literature to classify attacks into different groups. One way is to split attacks into active and passive ones \cite{b3,b4}.  In the case of passive attacks, attempts are not made to manipulate data in network traffic, but rather to eavesdrop and collect sensitive information. The opposite is the case with active attacks, which attempt to manipulate network packets, for example \cite{b4}. 
+
+At this point it also appears necessary to address the distinction between computer and network attacks mentioned in \cite{b2}. Computer attacks are spoken of when a computer system is attacked in any way. For example, attempts are made to slow down the performance of PCs or to manipulate data on hard disks. Network attacks are divided into two variants: The first option is to use the network to attack a computer system. Although these are network attacks, they can also be seen as a subset of computer attacks. The second option is when network attacks are actually directed only at the network and not at computer systems, for example by congesting a network with packets. The following figure is included to provide clarity and shows the relationship between computers and network attacks.
+
+\begin{figure}[htbp]  
+\centerline{\includegraphics[scale=.90]{computer-network-attacks.jpg}}
+\caption{Ratio of computer and network attacks \cite{b2}}
+\end{figure}
+
+\medskip Further approaches exist such as classifying into internal and external attacks, or classifying attacks based on the underlying OSI-layer.
 
 \medskip In the literature often cited is the classification model presented in \cite{b5}, which works on the basis of four dimensions and offers a holistic view of attacks. First, an attack class is assigned based on the attack vector. The attacks target is specified in the second dimension. The vulnerabilities that are exploited by the attack are then noted. Finally, the fourth dimension analyses whether an attack has a payload or an effect that exceeds the typical characteristics of the type of attack \cite{b5} . The rest of this chapter will focus on further introducing this model and consider each dimension individually.
 
@@ -107,7 +116,7 @@ There is a large number of network tools available in the world wide web. Many o
 
 \begin{figure}[htbp]  
 \centerline{\includegraphics[scale=.55]{network-tools.jpg}}
-\caption{taxonomy of network security tools \cite{b1}}
+\caption{Taxonomy of network security tools \cite{b1}}
 \end{figure}
 
 \subsection{Information gathering}
