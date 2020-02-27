@@ -35,11 +35,11 @@ Supervised learning in artificial intelligence requires a training dataset that 
 \end{abstract}
 
 \begin{IEEEkeywords}
-artificial intelligence, neuronal networks, computer networks, network security, packet generation
+artificial intelligence, neural networks, computer networks, network security, packet generation
 \end{IEEEkeywords}
 
 \section{Introduction}
-Generating network traffic that can be used to train a neuronal network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic are available in the Internet each with their own advantages and disadvantages and generating realistic network traffic that does not get mislabeled by intrusion detection systems just to name a few. 
+Generating network traffic that can be used to train a neural network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic are available in the Internet each with their own advantages and disadvantages and generating realistic network traffic that does not get mislabeled by intrusion detection systems just to name a few. 
 
 This paper is split into three chapters. The first chapter explains the different kinds of attacks and their targets. The second chapter focuses on tools to generate malicious traffic. The third chapter addresses the problem of generating useful network traffic.
 
@@ -60,7 +60,7 @@ In order to fulfil the task, it initially appears necessary to describe typical 
 At this point it also appears necessary to address the distinction between computer and network attacks mentioned in \cite{b2}. Computer attacks are spoken of when a computer system is attacked in any way. For example, attempts are made to slow down the performance of PCs or to manipulate data on hard disks. Network attacks are divided into two variants: The first option is to use the network to attack a computer system. Although these are network attacks, they can also be seen as a subset of computer attacks. The second option is when network attacks are actually directed only at the network and not at computer systems, for example by congesting a network with packets. The following figure is included to provide clarity and shows the relationship between computers and network attacks.
 
 \begin{figure}[htbp]  
-\centerline{\includegraphics[scale=.90]{computer-network-attacks.jpg}}
+\centerline{\includegraphics{computer-network-attacks.jpg}}
 \caption{Ratio of computer and network attacks \cite{b2}}
 \end{figure}
 
@@ -85,7 +85,8 @@ At this point it also appears necessary to address the distinction between compu
 \smallskip Network attacks: the category is divided into several sub-areas. If an attacker pretends to be someone else by manipulating certain addresses, this is called spoofing. This can take place on the basis of the MAC address (MAC Address Spoofing) or on the basis of the IP address (IP Spoofing). An attack in which IP spoofing is used is session hijacking. Here, an attacker tries to link into a session (based, for example, on TCP / Telnet) between two hosts and virtually replace one host. In the case of wireless network attacks, weaknesses such as too short initialization vectors of the WEP standard can be exploited. In the event of attacks on web applications, attempts are made to exploit security gaps in them.  For example, if there is no strict separation between user input and program instructions, or there is insufficient input validation, an attacker can successfully send manipulated SQL statements to the underlying database. The consequences would be spying out of data or losing control of the underlying server. \cite{b2}.
 
 \smallskip Physical attacks: this type of attack aims to cause physical damage to target systems (i.e. computers or networks). This includes, for example, deliberately cutting network cables or destroying computers \cite{b2}.
-Password attacks: here an attempt is made to find out a specific password in order to gain control over a PC, for example. This can be done in three different ways: trying out all possible password combinations (brute force), trying out a part of all possible password combinations (e.g. testing simple passwords) and determining deficiencies in password storage / encryption \cite{b2,b5}.
+
+\smallskip Password attacks: here an attempt is made to find out a specific password in order to gain control over a PC, for example. This can be done in three different ways: trying out all possible password combinations (brute force), trying out a part of all possible password combinations (e.g. testing simple passwords) and determining deficiencies in password storage / encryption \cite{b2,b5}.
 
 \smallskip Information gathering attacks: this type of attack does not change data; it is only about spying on (sensitive) information, which can be used for follow-up attacks \cite{b5}. A possible variant of this is sniffing of packets, to find out about IP and MAC addresses or passwords \cite{b2}.
 
@@ -115,7 +116,7 @@ Password attacks: here an attempt is made to find out a specific password in ord
 There is a large number of network tools available in the world wide web. Many of them are free to download and can be used for malicious activities but there are also many that are for defensive purposes. Generally speaking there are two major groups: tools for network attackers and tools for network defenders.\cite{b1} The tools for network attackers are the ones generating the packets thus being the ones we will focus on. 
 
 \begin{figure}[htbp]  
-\centerline{\includegraphics[scale=.55]{network-tools.jpg}}
+\centerline{\includegraphics[scale=.65]{network-tools.jpg}}
 \caption{Taxonomy of network security tools \cite{b1}}
 \end{figure}
 
@@ -278,7 +279,13 @@ The advantage of using this strategy is that it is not influenced by a particula
 
 
 \section{Summary and conclusion}
+Various aspects must be taken into account for the generation of realistic network traffic for the production of a dataset, which is subsequently used for supervised machine learning. In the course of this paper, cyber-attacks were explained in principle, various tools for carrying out the attacks were shown, and how realistic network traffic based on benign and malicious data packets can be generated. The topics covered are summarized at this point in order to emphasize the most important content again.
 
+Cyber -attacks generally try to exploit various vulnerabilities and carry out malicious actions. In order to provide an overview of the multitude of different attack methods, there are various approaches in the literature to classify the attacks into a few groups. The focus of this work is the classification model found in  \cite{b5}, which aims to enable a holistic view of attacks. Basically, nine different attack classes are described, including network attacks, denial of service attacks, information gathering attacks and various types of malware-based attacks. Subsequently, various attack targets (software, hardware and network), as well as vulnerabilities (in design, implementation, configuration) are explained in more detail.
+Tools for carrying out-cyber attacks are basically divided into two different groups, namely information gathering tools and attack launching tools. The former tries to find out various information about the system to be attacked (open ports, operating system used, etc.). Sniffing and scanning tools can be used for this. Attack launching tools for performing denial of service attacks and for packet forging were identified. Furthermore, it is also possible to proceed on the basis of legitimate requests on the application layer. The creation of realistic network traffic based on benign and malicious data packets is a complex undertaking. By using tools, various strategies exist to generate harmless traffic, for example by using software robots.
+
+\section{Further research}
+Future work on this topic could try to look at attack methods on a more detailed level in order to provide specific information. Furthermore, it makes sense to identify additional tools for carrying out cyber-attacks. There is also room for further research in the search for other ways of generating realistic network traffic including benign and malicious behavior. 
 
 \begin{thebibliography}{00}
 \bibitem{b1} N. Hoque, M. H. Bhuyan, R. C. Baishya, D. K. Bhattacharyya und J. K. Kalita, ``Network attacks: Taxonomy, tools and systems'', Journal of Network and Computer Applications, 2014. Jg., Nr. 40, 2014.
