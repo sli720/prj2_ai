@@ -89,6 +89,29 @@ At this point it also appears necessary to address the distinction between compu
 
 \smallskip Information gathering attacks: this type of attack does not change data; it is only about spying on (sensitive) information, which can be used for follow-up attacks \cite{b5}. A possible variant of this is sniffing of packets, to find out about IP and MAC addresses or passwords \cite{b2}.
 
+\smallskip To provide better clarity, the individual attack classes, including some examples, are listed again in the following table:
+
+\begin{table}[htbp]
+\caption{Different attack classes and examples \cite{b2}} 
+\centering
+\begin{tabular}{ | c | c | }
+\hline
+Type of attack & Example(s) \\
+\hline
+Virus & File Infector, Macro Virus \\
+Worm & Mass-Mailing Worm, Network-Aware Worm \\
+Trojan & Logic Bomb \\
+Buffer overflow & Stack Buffer Overflow, Heap Overflow \\
+Denial of Service Attack & Host Based, Network Based, Distributed \\
+Network-Based Attack & Spoofing,  Web Application Attacks \\
+Physical Attack & Basic attacks \\
+Password Attack & Dictionary Attack, Brute Force \\
+Information Gathering &	Sniffing, Mapping, Security Scanning \\
+\hline
+\end{tabular}
+\label{table:attack-types}
+\end{table}
+
 \medskip \subsubsection{Second dimension}The targets of attacks are described in the second dimension of the classification model. These should be described as specifically as possible, which means that it is not sufficient, for example, to specify which server was attacked, but rather which service or which operating system is affected with which version. It should also be noted that an attack can target more than one target. Basically three groups of attack targets are defined \cite{b5}:
 
 \smallskip Hardware: this group is divided into three areas. First of all, computers and their components (e.g. processors, random access memory) should be mentioned. Network devices such as routers or switches also belong to this category. Ultimately, peripheral devices such as monitors and keyboards are also included.
