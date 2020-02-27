@@ -39,9 +39,9 @@ artificial intelligence, neural networks, computer networks, network security, p
 \end{IEEEkeywords}
 
 \section{Introduction}
-Generating network traffic that can be used to train a neural network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic are available in the Internet each with their own advantages and disadvantages and generating realistic network traffic that does not get mislabeled by intrusion detection systems just to name a few. 
+Generating network traffic that can be used to train a neural network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic, each with their own advantages and disadvantages, and realistic benign network traffic has to be generated, just to name a few.
 
-This paper is split into three chapters. The first chapter explains the different kinds of attacks and their targets. The second chapter focuses on tools to generate malicious traffic. The third chapter addresses the problem of generating useful network traffic.
+This paper is split into three chapters. The first chapter explains the different kinds of attacks and their targets. The second chapter focuses on tools to generate malicious traffic. The third chapter addresses the problem of generating realistic network traffic.
 
 At this point all of our considerations are based on theoretical research without practical implementation which will come to life in further work. Therefore this paper sets a direction and foundation for the next steps and shows possible solutions at a high level.
 
@@ -51,7 +51,7 @@ At this point all of our considerations are based on theoretical research withou
 This chapter intends to provide an overview of various types of cyber-attacks, cyber-attack targets and exploitable vulnerabilities. 
 
 \subsection{General information}
-In order to fulfil the task, it initially appears necessary to describe typical characteristics of attacks. Attacks aim to exploit weaknesses, such as poorly configured systems, or errors in software and to circumvent security measures. Attackers deliberately try to make services unavailable, spy on or manipulate data and disrupt normal traffic as much as possible \cite{b1}. Executing attacks generally consists of several steps: First, the attacker's motivation must be clarified (e.g. proof of your own abilities). Then it is necessary to select a target and collect information about it. As soon as this has happened, the attack method is selected and the attack is performed \cite{b2}. 
+In order to fulfil the task, it initially appears necessary to describe typical characteristics of attacks. Attacks aim to exploit weaknesses, such as poorly configured systems, or errors in software and to circumvent security measures. Attackers deliberately try to make services unavailable, spy on or manipulate data and disrupt normal traffic as much as possible \cite{b1}. Executing attacks generally consists of several steps: First, the attacker's motivation must be clarified (e.g. proof of the attacker's own abilities). Then it is necessary to select a target and collect information about it. As soon as this has happened, the attack method is selected and the attack is performed \cite{b2}. 
 
 \subsection{Classifying attacks}
 
@@ -61,12 +61,12 @@ At this point it also appears necessary to address the distinction between compu
 
 \begin{figure}[htbp]  
 \centerline{\includegraphics{computer-network-attacks.jpg}}
-\caption{Ratio of computer and network attacks \cite{b2}}
+\caption{Relationship of computer and network attacks \cite{b2}}
 \end{figure}
 
 \medskip Further approaches exist such as classifying into internal and external attacks, or classifying attacks based on the underlying OSI-layer.
 
-\medskip In the literature often cited is the classification model presented in \cite{b5}, which works on the basis of four dimensions and offers a holistic view of attacks. First, an attack class is assigned based on the attack vector. The attacks target is specified in the second dimension. The vulnerabilities that are exploited by the attack are then noted. Finally, the fourth dimension analyses whether an attack has a payload or an effect that exceeds the typical characteristics of the type of attack \cite{b5} . The rest of this chapter will focus on further introducing this model and consider each dimension individually.
+\medskip The classification model presented in \cite{b5}, which works on the basis of four dimensions and offers a holistic view of attacks, is often cited in the literature. First, an attack class is assigned based on the attack vector. The attack's target is specified in the second dimension. The vulnerabilities that are exploited by the attack are then noted. Finally, the fourth dimension analyses whether an attack has a payload or an effect that exceeds the typical characteristics of the type of attack \cite{b5} . The rest of this chapter will focus on further introducing this model and consider each dimension individually.
 
 \subsubsection{First dimension}
 
@@ -180,8 +180,8 @@ Paketto & Scanning \\
 \end{table}
 
 \subsection{Attack launching}
-The most packets however are generated by the attacks themselves.
-Especially some kinds of DoS attacks are designed to overload the network with packets such that the victim cannot respond to legitimate requests. 
+The most packets, however, are generated by the attacks themselves.
+Especially some kinds of DoS attacks are designed to overload the network with packets so that the victim cannot respond to legitimate requests. 
 
 \subsubsection{Denial of service}
 The Internet provides many tools that are capable of executing DoS attacks and can be easily used to crash hosts or even networks.
@@ -262,12 +262,12 @@ Application layer attacks use legitimate requests to use up all the resources of
 \section{Generating a realistic network load}
 A problem that exists with generating a realistic network load is the unwanted burstiness of real networks. Misconfigurations can result in traffic that looks similar to flooding attacks \cite{b10} and are hard to reproduce in small sandbox networks. Existing datasets often do not include such noise which result in unrealistic datasets \cite{b10}.
  
-\smallskip According to \cite{b10} it might be impossible to create a single representative background trace that contains benign and malicious traffic. Reason being that the expected traffic workload and characteristics are highly dependent on the network and its hosts.
+\smallskip According to \cite{b10} it might be impossible to create a single representative background trace that contains benign and malicious traffic. The reason is that the expected traffic workload and characteristics are highly dependent on the network and its hosts.
 
 Tools such as Trident provide multiple strategies to create benign traffic \cite{b10}. 
 
 \subsection{NIDS-based strategies}
-Using a wellknown network intrusion detection system (NIDS) such as Snort they groom a packet trace from a local site. This approach causes problems since benign packets that are flagged as malicious (false postives) are removed.
+Using a wellknown network intrusion detection system (NIDS) such as Snort, these tools can groom a packet trace from a local site. This approach causes problems since benign packets that are flagged as malicious (false postives) are removed.
 
 \subsection{Synthetic generation strategies}
 Software robots emulate user behaviour and thus generate synthetic traffic. The idea behind it is that the robot only creates connections with known good hosts. 
