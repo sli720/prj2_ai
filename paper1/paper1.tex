@@ -30,8 +30,7 @@ cs19m020@technikum-wien.at}
 \maketitle
 
 \begin{abstract}
-Supervised learning in artificial intelligence requires a training dataset that is already labeled. Doing so with network packets is a challenge due to the fact that even Intrusion Detection Systems are not always correct with their guessing. To overcome this problem it is necessary to generate malicious and benign packets and label them accordingly. To increase the quality of the dataset the IP addresses from the machines should not remain the same for all of the data and the malicious and benign traffic should be mixed.
-
+Supervised learning in artificial intelligence requires a training dataset that is already labeled. Doing so with network packets is a challenge due to the fact that even Intrusion Detection Systems are not always correct with their guessing. To overcome this problem it is necessary to generate malicious and benign packets and label them accordingly. To increase the quality of the dataset the IP addresses from the machines should not remain the same for all of the data and the malicious and benign traffic should be mixed. Therefore, a literature search is carried out in the relevant specialist literature, scientific work and publications in order to research the necessary basics. Different types of attacks, tools for carrying out attacks and how realistic network traffic can be generated are to be determined. The results show that some approaches exist to divide the multitude of different attack methods into a few, individual groups. Nine generic attack classes as well as typical attack targets and vulnerabilities are identified. In addition, various tools for carrying out attacks are determined. These can be divided into the areas of information gathering and attack launching. Furthermore, different strategies are considered to generate realistic network traffic consisting of benign and malicious data packets. In conclusion, the information determined in the context of this work helps to generate an appropriate dataset for supervised machine learning.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -41,9 +40,9 @@ artificial intelligence, neural networks, computer networks, network security, p
 \section{Introduction}
 Generating network traffic that can be used to train a neural network brings some challenges: there are many different attack types that need to be considered, a vast variety of attack tools to generate malicious traffic, each with their own advantages and disadvantages, and realistic benign network traffic has to be generated, just to name a few.
 
-This paper is split into three chapters. The first chapter explains the different kinds of attacks and their targets. The second chapter focuses on tools to generate malicious traffic. The third chapter addresses the problem of generating realistic network traffic.
+This paper is split into three chapters. The first chapter explains the different kinds of attacks and their targets. The second chapter focuses on tools to generate malicious traffic. The third chapter addresses the problem of generating realistic network traffic. 
 
-At this point all of our considerations are based on theoretical research without practical implementation which will come to life in further work. Therefore this paper sets a direction and foundation for the next steps and shows possible solutions at a high level.
+At this point all of our considerations are based on theoretical research without practical implementation which will come to life in further work. Therefore this paper sets a direction and foundation for the next steps and shows possible solutions at a high level. The results are elaborated on the basis of an extensive literature search in relevant specialist literature, scientific works and publications. The list of individual sources can be found at the end of the work.
 
 \section{Cyber-attacks: types, targets, vulnerabilites}
 \label{sec:cattv}
@@ -285,7 +284,7 @@ Cyber -attacks generally try to exploit various vulnerabilities and carry out ma
 Tools for carrying out-cyber attacks are basically divided into two different groups, namely information gathering tools and attack launching tools. The former tries to find out various information about the system to be attacked (open ports, operating system used, etc.). Sniffing and scanning tools can be used for this. Attack launching tools for performing denial of service attacks and for packet forging were identified. Furthermore, it is also possible to proceed on the basis of legitimate requests on the application layer. The creation of realistic network traffic based on benign and malicious data packets is a complex undertaking. By using tools, various strategies exist to generate harmless traffic, for example by using software robots.
 
 \section{Further research}
-Future work on this topic could try to look at attack methods on a more detailed level in order to provide specific information. Furthermore, it makes sense to identify additional tools for carrying out cyber-attacks. There is also room for further research in the search for other ways of generating realistic network traffic including benign and malicious behavior. 
+Future work on this topic could try to look at attack methods on a more detailed level in order to provide more specific information. Furthermore, it makes sense to identify additional tools for carrying out cyber-attacks. There is also room for further research in the search for other ways of generating realistic network traffic including benign and malicious behavior. 
 
 \begin{thebibliography}{00}
 \bibitem{b1} N. Hoque, M. H. Bhuyan, R. C. Baishya, D. K. Bhattacharyya und J. K. Kalita, ``Network attacks: Taxonomy, tools and systems'', Journal of Network and Computer Applications, 2014. Jg., Nr. 40, 2014.
