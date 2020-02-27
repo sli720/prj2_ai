@@ -73,7 +73,7 @@ At this point it also appears necessary to address the distinction between compu
 
 \smallskip Virus: this is a malware that replicates itself and, for example, infects other script code. When the infected source code is executed, the virus is also executed \cite{b6}.  Basically there are many different types of viruses. An example would be File Infectors, in which a virus is embedded in a file. If this file is executed, the virus is also executed \cite{b2}.
 
-\smallskip Worms: a software that spreads independently by exploiting vulnerabilities \cite{b6}. Examples include mass mailing worms, which spread via email, and network-aware worms, which only require four steps to infect a foreign host and spread themselves \cite{b2}.
+\smallskip Worms: a software that spreads independently by exploiting vulnerabilities \cite{b6}. Examples include mass mailing worms, which spread via email, and network-aware worms, which require only a few steps to infect a foreign host and spread themselves \cite{b2}.
 
 \smallskip Trojans: a software that appears harmless at first, but also contains a hidden, malicious function \cite{b6}. One example are logic bombs, which only execute their malicious payload when a specific condition (e.g. a certain time of a day) has been reached \cite{b2}.
 
@@ -107,12 +107,12 @@ At this point it also appears necessary to address the distinction between compu
 
 \medskip \subsubsection{Fourth dimension}The last dimension analyzes whether an attack has a payload or an effect that exceeds the typical characteristics of the type of attack. This should result in a detailed view of the payload. For example, a worm's payload might be a Trojan, or the worm might just be manipulating files \cite{b5}.
 
-\medskip The classification model offers a comprehensive view of attacks. For example, for a worm that is distributed via email (dimension 1), the target Windows 95 (dimension 2) with an inadequate configuration (dimension 3) and a virus as payload (dimension 4) is determined. Further dimensions could be specified, for example what damage is caused by an attack, or how many costs arise from successfully carrying out the attack. Overall an overview is provided of how attacks can be classified, which attack targets are possible, or which vulnerabilities exist.
+\medskip The classification model offers a comprehensive view of attacks. For example, for a worm that is distributed via email (dimension 1), the target Windows 95 (dimension 2) with an inadequate configuration (dimension 3) and a virus as payload (dimension 4) could be determined. Further dimensions could be specified, for example what damage is caused by an attack, or how many costs arise from successfully carrying out the attack. Overall an overview is provided of how attacks can be classified, which attack targets are possible, or which vulnerabilities exist.
 
 
 \section{Tools}
 
-There is a large number of network tools available in the world wide web. Many of them are free to download and can be used for malicious activities but there are also many that are for defensive purposes. Generally speaking there are two major groups: tools for network attackers and tools for network defenders.\cite{b1} The tools for network attackers are the ones generating the packets thus being the ones we will focus on. 
+There is a large number of network tools available in the world wide web. Many of them are free to download and can be used for malicious activities but there are also many that can be used for defensive purposes. Generally speaking there are two major groups: tools for network attackers and tools for network defenders.\cite{b1} The tools for network attackers are the ones generating the packets thus being the ones we will focus on. 
 
 \begin{figure}[htbp]  
 \centerline{\includegraphics[scale=.65]{network-tools.jpg}}
@@ -122,7 +122,7 @@ There is a large number of network tools available in the world wide web. Many o
 \subsection{Information gathering}
 Attackers usually collect information before starting their attack. Understanding the environment, what operating systems are used, finding open ports and available services are only a small part of information that can be obtained. 
 
-\smallskip Table \ref{table:sniffing-tools} contains a list of sniffing tools that are available online. Generally speaking sniffing tools do not generate packets and are therfore undetectable. However, on a switched ethernet network segment a sniffer does generate a small amount of packets such as ARP\cite{b9}. Other types of sniffers, such as Ettercap, can execute a Man-in-the-middle attack. This causes a lot of packets to be sent through the network as it needs to answer requests in order to spoof an identity.
+\smallskip Table \ref{table:sniffing-tools} contains a list of sniffing tools that are available online. Generally speaking, sniffing tools do not generate packets and are therfore undetectable. However, on a switched ethernet network segment a sniffer does generate a small amount of packets such as ARP\cite{b9}. Other types of sniffers, such as Ettercap, can execute a Man-in-the-middle attack. This causes a lot of packets to be sent through the network as it needs to answer requests in order to spoof an identity.
 
 \begin{table}[htbp]
 \caption{Sniffing tools \cite{b1}} 
