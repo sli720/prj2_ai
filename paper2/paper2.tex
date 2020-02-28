@@ -37,15 +37,15 @@ cs19m006@technikum-wien.at}
 \maketitle
 
 \begin{abstract}
-Collecting real network data for further processing is an important topic for the training of neuronal networks which filter suspicious from ordinary traffic. This paper focuses mainly on research in the areas of network simulation, network recording and data extraction which should serve as input for the following papers.
+Collecting real network data for further processing is an important topic for the training of neural networks which filter suspicious from ordinary traffic. This paper focuses mainly on research in the areas of network simulation, network recording and data extraction which should serve as input for the following papers.
 \end{abstract}
 
 \begin{IEEEkeywords}
-artifical intelligence, neuronal networks, computer networks, network security, data collection
+artifical intelligence, neural networks, computer networks, network security, data collection
 \end{IEEEkeywords}
 
 \section{Introduction}
-Neuronal networks which filter suspicious network traffic need a training data set of high quality. This data set could be produced from real network traffic but this can be difficult to implement. Another option considers network simulators which can be easily configured depending on the selected scenarios.
+Neural networks which filter suspicious network traffic need a training data set of high quality. This data set could be produced from real network traffic but this can be difficult to implement. Another option considers network simulators which can be easily configured depending on the selected scenarios.
 
 This paper is split in three chapters. The first chapter compares available network simulators and their software interfaces and explores possibilities for their automated setup based on the scenario and parameters. The second chapter focuses on tools to record the network traffic. In the third chapter methods of feature extraction and label definition are covered. This information serves as foundation for the further implementation of a system for automated data collection for artifical intelligence.
 
@@ -104,7 +104,7 @@ Hypervisors like VirtualBox or VMware provide the possibility to set up full vir
 
 A popular solution to bootstrap development environments in virtual machines is called Vagrant which provides lightweight base images and an interface to automate the configuration of the virtual machines. Moreover it can be connected to provisioning tools to further configure host systems. Vagrant supports VirtualBox or VMware but also Docker and can be extended to support cloud services like AWS or even to install a whole Kubernetes cluster. It gives us the power to start with simple configurations and scale them up to more sophisticated ones using containerization and complex orchestrators. \cite{b9} \cite{b10}
 
-This means we would be ready to create system environments on our host or in the cloud and install base systems on them. The next section focuses on the automated setup of the network simulator, recorder and data extractor within virtual machines or Docker containers as well as the configuration of network topologies based on the selected scenarios and parameters to produce, record and extract network traffic for further processing in neuronal networks to improve their strike rate.
+This means we would be ready to create system environments on our host or in the cloud and install base systems on them. The next section focuses on the automated setup of the network simulator, recorder and data extractor within virtual machines or Docker containers as well as the configuration of network topologies based on the selected scenarios and parameters to produce, record and extract network traffic for further processing in neural networks to improve their strike rate.
 
 \subsection{Provisioning of the infrastructure}
 
@@ -214,7 +214,7 @@ Another aspect which has been examined is the stability of features in terms of 
 
 \subsection{Flow statistical features}
 
-A common approach is to group packets into flows, and then calculate statistical features based on these flows. Generally, a flow is a group of packets with the same source and destination IP addresses and ports, and the same protocol \cite{brownlee1998}. However, a flow can also be terminated by a TCP FIN packet or a timeout \cite{Ids2018}. Statistical features of network flows include the following:
+A common approach is to group packets into flows, and then calculate statistical features based on these flows. Generally, a flow is a group of packets with the same source and destination IP addresses and ports, and the same protocol. However, a flow can also be terminated by a TCP FIN packet or a timeout \cite{Ids2018}. Statistical features of network flows include the following:
 \begin{itemize}
 	\item Flow duration \cite{Nb2015} \cite{Ids2018}
 	\item Time between two flows or packets \cite{Ids2018}
@@ -318,7 +318,7 @@ The quality of a dataset is generally crucial for the performance of machine lea
 \bibitem{b6} Eve-ng.net. (2020). Screenshots. [online] Available at: https://www.eve-ng.net/index.php/screenshots/ [Accessed 22 Feb. 2020].
 \bibitem{b7} Eve-ng.net. (2020). EVE-NG API. [online] Available at: \url{https://www.eve-ng.net/index.php/documentation/howtos/how-to-eve-ng-api/} [Accessed 22 Feb. 2020].
 \bibitem{b8} Bernstein, D. Containers and Cloud: From LXC to Docker to Kubernetes, in IEEE Cloud Computing, vol. 1, no. 3, pp. 81-84, Sept. 2014.
-\bibitem{b9} Nishant Kumar Singh, S. Thakur, H. Chaurasiya and H. Nagdev, Automated provisioning of application in IAAS cloud using Ansible configuration management, 1st International Conference on Next Generation Computing Technologies (NGCT), Dehradun, 2015, pp. 81-85.
+\bibitem{b9} Sandobalín, J. and Insfran, E. and Abrahão, S. (2020). On the Effectiveness of Tools to Support Infrastructure as Code: Model-Driven versus Code-Centric. IEEE Access. 10.1109/ACCESS.2020.2966597.
 \bibitem{b10} Spanaki, P. Cloud Computing: Security Issues and Establishing Virtual Cloud Environment via Vagrant to Secure Cloud Hosts, 2018, pp. 539-553
 \bibitem{b11} Ivanova, D. and Borovska, P. and Zahov, S. Development of PaaS using AWS and Terraform for medical imaging analytics, AIP Conference Proceedings, 2018
 \bibitem{winpcaporg} WinPcap: News, Riverbed Technology (2010), https://www.winpcap.org/misc/copyright.htm [Accessed 26.02.2020]
@@ -338,7 +338,6 @@ The quality of a dataset is generally crucial for the performance of machine lea
 \bibitem{celik2015} Celik, Z. Berkay and Walls, R. J. and McDaniel, P. and Swami, A. (2015). Malware traffic detection using tamper resistant features. MILCOM 2015 - 2015 IEEE Military Communications Conference, pp. 330–335, Oct 2015.
 \bibitem{este2009} Este, A. and Gringoli, F. and Salgarelli, L. (2009). On the stability of the information carried by traffic flow features at the packet level. SIGCOMM Comput. Commun. Rev., vol. 39, p. 13–18, June 2009.
 \bibitem{mantere2013} Mantere, M. and Sailio, M. and Noponen, S. (2013). Network traffic features for anomaly detection in specific industrial control system network. Future Internet, vol. 5, pp. 460-473, 2013
-\bibitem{brownlee1998} Brownlee, N. (1998). Network management and realtime traffic flowmeasurement. J. Netw. Syst. Manage., vol. 6, pp. 223–228, June 1998.
 \bibitem{waizumi2007} Waizumi, Y. and Sato, Y. and Nemoto, Y. (2007). A network-based anomaly detection system using multiple network features. Proceedings of the Third International Conference on Web Information Systems and Technologies - Internet Technology, pp. 410-413, 2007.
 \bibitem{cicflowmeter} Canadian Institute for Cybersecurity (CIC) (2016). Applications | Research | Canadian Institute for Cybersecurity | UNB. [online] Available at: \url{https://www.unb.ca/cic/research/applications.html#CICFlowMeter} [Accessed 24 Feb. 2020].
 \bibitem{lashkari2017} Lashkari, A. H. and Gil, G. D. and Mamun, M. S. I. and Ghorbani, A. A. (2017). Characterization of tor traffic using time based features. Proceedings of the 3rd International Conference on Information Systems Security and Privacy (ICISSP 2017), pp. 253-262, 2017.
