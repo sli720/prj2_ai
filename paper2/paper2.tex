@@ -144,7 +144,7 @@ Especially in the world of Unix based operating systems, \textit{tcpdump} is one
 \label{tcpdump}
 \end{figure}
 
-With the wide set of options, \textit{tcpdump} is a pretty agile tool for dumping any analysing network traffic. A few of the options are listed below \cite{wikiUbuntu}.
+With the wide set of options, \textit{tcpdump} is a pretty agile tool for dumping any analysing network traffic. A few of the options are listed below \cite{tcpdumporg}. 
 
 \begin{itemize}
 \item \textbf{-i eth0} the traffic from the interface \textit{eth0} is captured
@@ -153,6 +153,7 @@ With the wide set of options, \textit{tcpdump} is a pretty agile tool for dumpin
 \item \textbf{-r example.dump} parsing the file \textit{example.dump} into tcpdump
 \end{itemize}
 
+If \textit{tcpdump} is compiled with cryptography, it is able to decrypt IPsec ESP packets in real time \cite{goyal2017}.
 For the Windows enthusiasts a Windows derivative of \textit{tcpdump} is available. It is called \textit{WinDump}. \textit{WinDump} uses so called WinPcap library for Windows operating systems.  Which has the same APIs as libpcap for Unix-like systems. This means, network traffic captured, e.g. on a Ubuntu system can be analysed on a Windows 10 Client afterwards.
 
 \subsection*{Wireshark}
@@ -177,7 +178,7 @@ The fourth tool is called \textit{Capsa} from \textit{Colasoft} founded 2001 in 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.30]{capsa.png}}
-\caption{Graphical Evaluation of Network Traffic with Capsa}
+\caption{Graphical Evaluation of Network Traffic with Capsa \cite{firewallcx}}
 \label{capsa}
 \end{figure}
 
@@ -340,10 +341,13 @@ The quality of a dataset is generally crucial for the performance of machine lea
 \bibitem{abad2003} Abad, C. and Taylor, J. and Sengul, C.  and Yurcik, W. and Zhou, Y. and Rowe, K. (2003). Log correlation for intrusion detection: a proof of concept. 19th Annual Computer Security Applications Conference, 2003. Proceedings., pp. 255–264, Dec 2003.
 \bibitem{creech2014} Creech, G. and Hu, J. (2014). A semantic approach to host-based intrusion detection systems using contiguous and discontiguous system call patterns. IEEE Transactions on Computers, vol. 63, no. 4, pp. 807-819, April 2014.
 \bibitem{bagui2017} Bagui, S. and Fang, X. and Kalaimannan, E. and Bagui, S. C. and Sheehan, J. (2017). Comparison of machine-learning algorithms for classification of vpn network traffic flow using time-related features. Journal of Cyber Security Technology, vol. 1, no. 2, pp. 108–126, 2017.
-\bibitem{wikiUbuntu} ubuntuusers.de
-\bibitem{asrodiapatel2012} P. Asrodia, H. Patel (2012). Analysis  of  Various  Packet  Sniffing  Tools  for Network  Monitoring  and  Analysis.
-\bibitem{suribatra2012} S. Suri, V. Batra, Comparative Study of Network Monitoring Tools.
+\bibitem{tcpdumporg} Van Jacobson, C. Leres, S. McCanne,tcpdump.org (26.02.2020) https://www.tcpdump.org/manpages/tcpdump.1.html [Accessed 27.02.2020]
+\bibitem{asrodiapatel2012} P. Asrodia, H. Patel (2012). Analysis  of  Various  Packet  Sniffing  Tools  for Network  Monitoring  and  Analysis, ISSN  No.  (Online)  :  2277-2626
+\bibitem{suribatra2012} S. Suri, V. Batra, Comparative Study of Network Monitoring Tools, International Journal ofInnovative Technology and Exploring Engineering (IJITEE)ISSN: 2278-3075,Volume-1, Issue-3, August 2012
+\bibitem{goyal2017} P. Goyal, A. Goyal (2017), Comparative study of two most popular packet sniffing tools-Tcpdump and Wireshark
+\bibitem{firewallcx} http://www.firewall.cx/images/stories/review-capsa-enterprisev7-7.jpg [Accessed 26.02.2020]
 \end{thebibliography}
+
 
 \vspace{12pt}
 \color{red}
