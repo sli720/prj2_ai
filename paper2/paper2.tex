@@ -124,19 +124,19 @@ A real test case would then consist of multiple scenarios of attacks and usual n
 
 \section{Recording}
 
-Before the network traffic can be analysed, it has to be recorded first. Therefore, this chapter will give an overview of the available third-party software which can be used to record all the incoming network traffic. The functional requirements for a tool are chiefly the pace of handling the network traffic. All of these tools are client-based tools. Means that the software needs a client to be set up and used. This means that either the network target for the traffic has to be a client or the e.g. switch has to clone a port with all the incoming and outgoing traffic and direct all the data to a client running one or more of these tools. In some cases, analysing of network traffic can take much longer than the data is send or received by the network which means, that all the data need to be buffered or stored. In this case a packet-to-disk packet recorder is needed. This device can capture large amount of network traffic with a data rate of up to 40 Gbit/s and write it into files. 
+Before the network traffic can be analysed, it has to be recorded first. Therefore, this chapter will give an overview of the available third-party software which can be used to record all the incoming network traffic. The functional requirements for a tool are chiefly the pace of handling the network traffic. All of these tools are client-based tools. This means that either the network target for the traffic has to be a client or the e.g. switch has to clone a port with all the incoming and outgoing traffic and direct all the data to a client running one or more of these tools. In some cases, analysing of network traffic can take much longer than the data is sent or received by the network which means, that all the data need to be buffered or stored. In this case a packet-to-disk recorder is needed. This device can capture large amount of network traffic with a data rate of up to 40 Gbit/s and write it into files. 
 
 \subsection{pcap Library}
 
-Every tools needs APIs\footnote{Application Programming Interface} to capture all the traffic sent through the network interface. Therefore, libraries were made for both Unix-like and Windows based operating systems. While \textit{libpcap} is used for Unix-like operating systems, a Windows system need the library called \textit{WinPcap}. With an pcap library software has the ability to tap all the network traffic from the selected interface. Based on the possibility to include the library in \textbf{C} and \textbf{C++}, \textit{pcap} can be used very easily into software. With the release of \textit{libpcap} 1.0.0, the zero-copy mechanism was implemented which allows the software to read the network traffic directly without copying the data from kernel space to user space.
+Every tools needs APIs\footnote{Application Programming Interface} to capture all the traffic sent through the network interface. Therefore, libraries were made for both Unix-like and Windows based operating systems. While \textit{libpcap} is used for Unix-like operating systems, a Windows system needs the library called \textit{WinPcap}. In 2013 the last release (4.1.3) of \textit{WinPcap} was published. Since then \textit{Npcap} acts as a substitute\cite{winpcaporg}. With a pcap library, software has the ability to tap all the network traffic from the selected interface. Based on the possibility to include the library in \textbf{C} and \textbf{C++}, \textit{pcap} can be used very easily in software. With the release of \textit{libpcap} 1.0.0, the zero-copy mechanism was implemented which allows the software to read the network traffic directly without copying the data from kernel space to user space.
 
 \subsection{Network Recording Tools}
 
-In this section we will itemise five well known and useful network recording tools. Some of the tools are console based tools, the other do have a GUI or both. All of these tools are client-based tools. Means that the software needs a Client to be set up and used. This means that either the network target for the traffic has to be a client or the e.g. switch has to clone a port with all the incoming and outgoing traffic and direct all the data to a client running one or more of these tools.
+In this section we will itemise five well known and useful network recording tools. Some of the tools are console based tools, others have a GUI, or both.
 
 \subsection*{tcpdump}
 
-Especially in the world of Unix based operating systems, \textit{tcpdump} is one of the best known tools for monitoring and sniffing network traffic. \textit{tcpdump} is exclusively command line based tool. This property makes \textit{tcpdump} a tool for advanced console line users only. But once you get familiar with the commands and options of \textit{tcpdump}, it will get a  a very efficient and powerful tool for many applications. \textit{tcpdump} uses the \textit{libpcap} network library of Unix based operating systems for capturing network traffic.
+Especially in the world of Unix based operating systems, \textit{tcpdump} is one of the best known tools for monitoring and sniffing network traffic. \textit{tcpdump} is an exclusively command line based tool. This property makes \textit{tcpdump} a tool for advanced command line users only. But once you get familiar with the commands and options of \textit{tcpdump}, it will get a  a very efficient and powerful tool for many applications. \textit{tcpdump} uses the \textit{libpcap} network library of Unix based operating systems for capturing network traffic.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.4]{tcpdump.png}}
@@ -144,7 +144,7 @@ Especially in the world of Unix based operating systems, \textit{tcpdump} is one
 \label{tcpdump}
 \end{figure}
 
-With the wide set of options, \textit{tcpdump} is a pretty agile tool for dumping any analysing network traffic. A few of the options are listed below \cite{tcpdumporg}. 
+With the wide set of options, \textit{tcpdump} is a pretty agile tool for dumping and analysing network traffic. A few of the options are listed below \cite{tcpdumporg}. 
 
 \begin{itemize}
 \item \textbf{-i eth0} the traffic from the interface \textit{eth0} is captured
@@ -154,11 +154,11 @@ With the wide set of options, \textit{tcpdump} is a pretty agile tool for dumpin
 \end{itemize}
 
 If \textit{tcpdump} is compiled with cryptography, it is able to decrypt IPsec ESP packets in real time \cite{goyal2017}.
-For the Windows enthusiasts a Windows derivative of \textit{tcpdump} is available. It is called \textit{WinDump}. \textit{WinDump} uses so called WinPcap library for Windows operating systems.  Which has the same APIs as libpcap for Unix-like systems. This means, network traffic captured, e.g. on a Ubuntu system can be analysed on a Windows 10 Client afterwards.
+For the Windows enthusiasts a Windows derivative of \textit{tcpdump} is available. It is called \textit{WinDump}. \textit{WinDump} uses the \textit{WinPcap} library, which provides the same API for Windows operating systems as \textit{libpcap} for Unix-like systems. This means, network traffic captured, e.g. on a Ubuntu system can be analysed on a Windows 10 Client afterwards.
 
 \subsection*{Wireshark}
 
-\textit{Wireshark} is for good reason the best known cross-platform networking tool available. In 2006 \textit{Wireshark} was started as a fork of the software called \textit{Ethereal} by the Wireshark-Community due to trademark issues \cite{asrodiapatel2012}.  The performance of this tool is powerful and the set of functions is neatly arranged. By using GTK toolkit, \textit{Wireshark} has implemented a GUI \footnote{Graphical User Interface}\cite{suribatra2012}. The GUI is separated typically into three segmentations, traffic overview, details of selected packet and the raw data of each packet.
+\textit{Wireshark} is for good reason the best known cross-platform networking tool available. In 2006 \textit{Wireshark} was started as a fork of the software called \textit{Ethereal} by the Wireshark-Community due to trademark issues \cite{asrodiapatel2012}.  The performance of this tool is powerful and the set of functions is neatly arranged. By using the GTK toolkit, \textit{Wireshark} has implemented a GUI \footnote{Graphical User Interface}\cite{suribatra2012}. The GUI is separated typically into three segments: the traffic overview, and the details and raw data of the selected packet.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.48]{wireshark.png}}
@@ -166,15 +166,15 @@ For the Windows enthusiasts a Windows derivative of \textit{tcpdump} is availabl
 \label{wireshark}
 \end{figure}
 
-A good asset of \textit{Wireshark} is its available set of filters for capturing and displaying network data. With the help of plugins, \textit{Wireshark} can even handle with new or dedicated protocols. Another big asset of \textit{Wireshark} is its capibility of capturing raw USB traffic from an USB-Port. By highlighting the traffic with different colours as shown in Fig.~\ref{wireshark} it's easier to scan for required traffic.
+A good asset of \textit{Wireshark} is its available set of filters for capturing and displaying network data. With the help of plugins, \textit{Wireshark} can even handle with new or dedicated protocols. Another big asset of \textit{Wireshark} is its capability of capturing raw USB traffic from an USB port. By highlighting the traffic with different colours as shown in Fig.~\ref{wireshark} it's easier to scan for required traffic.
 
-\subsection*{Netsniff-ng}
+\subsection*{netsniff-ng}
 
-\textit{Netsniff} is a another Unix based tool for network analysis. \textit{Netsniff} was the first tool which had the ability to analyse the whole traffic with a zero-copy procedure, means that \textit{Netsniff} uses the same data as the kernel do. Based on this functional principle, \textit{Netsniff} is one of the best performing tools for network sniffing. \textit{Netsniff} is like \textit{tcpdump} exclusively an console based software. The set of options contains 38 capabilities on the latest version of \textit{Netsniff}: 0.6.4 (effective 26.02.2020). 
+\textit{netsniff-ng} is a another Unix based tool for network analysis. \textit{netsniff-ng} was the first tool which had the ability to analyse the whole traffic with a zero-copy procedure, which means that \textit{netsniff-ng} uses the same data as the kernel does. Based on this functional principle, \textit{netsniff-ng} is one of the best performing tools for network sniffing. \textit{netsniff-ng} is like \textit{tcpdump} exclusively an console based software. The set of options contains 38 capabilities on the latest version 0.6.4 of \textit{netsniff-ng}.
 
 \subsection*{Capsa}
 
-The fourth tool is called \textit{Capsa} from \textit{Colasoft} founded 2001 in United States. \textit{Capsa} is suitable for real-time network data capturing both LAN and Wireless Interfaces. A big advantage of \textit{Capsa} is the ability to evaluate the network traffic into graphical output like diagrams. This feature can help identifying perpetrator of inadvertent network traffic quickly by a human. The free version of \textit{Capsa} is heavily restricted regarding available functions. 
+The fourth tool is called \textit{Capsa} from \textit{Colasoft} founded 2001 in United States. \textit{Capsa} is suitable for real-time network data capturing both LAN and Wireless Interfaces. A big advantage of \textit{Capsa} is the ability to evaluate the network traffic into graphical output like diagrams. This feature can help identifying the source of undesirable network traffic quickly by a human. The free version of \textit{Capsa} is heavily restricted regarding available functions. 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.30]{capsa.png}}
@@ -184,11 +184,11 @@ The fourth tool is called \textit{Capsa} from \textit{Colasoft} founded 2001 in 
 
 \subsection*{EtherApe}
 
-Yet another tool for network monitoring is called \textit{EtherApe}. \textit{EtherApe} is an Unix based software with a meaningful graphic interface and graphical data output of network traffic. With the help graphical illustration anomalies like a DDoS attack can be detected easily as shown in Fig.~\ref{etherape}. Every host is shown as a node in circle, every connection is shown as link between two nodes and every protocol has an own colour for the link. With higher network traffic between two hosts the link between nodes is shown larger.
+Yet another tool for network monitoring is called \textit{EtherApe}. \textit{EtherApe} is an Unix based software with a meaningful graphic interface and graphical data output of network traffic. With the help of graphical illustration anomalies like a DDoS attack can be detected easily as shown in Fig.~\ref{etherape}. Every host is shown as a node in circle, every connection is shown as link between two nodes and every protocol has an own colour for the link. With higher network traffic between two hosts the link between nodes is shown larger.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[scale=0.37]{etherape.png}}
-\caption{Graphic Representation of Network Traffic}
+\caption{Graphic Representation of Network Traffic \cite{etherapewiki}}
 \label{etherape}
 \end{figure}
 
@@ -321,6 +321,13 @@ The quality of a dataset is generally crucial for the performance of machine lea
 \bibitem{b9} Nishant Kumar Singh, S. Thakur, H. Chaurasiya and H. Nagdev, Automated provisioning of application in IAAS cloud using Ansible configuration management, 1st International Conference on Next Generation Computing Technologies (NGCT), Dehradun, 2015, pp. 81-85.
 \bibitem{b10} Spanaki, P. Cloud Computing: Security Issues and Establishing Virtual Cloud Environment via Vagrant to Secure Cloud Hosts, 2018, pp. 539-553
 \bibitem{b11} Ivanova, D. and Borovska, P. and Zahov, S. Development of PaaS using AWS and Terraform for medical imaging analytics, AIP Conference Proceedings, 2018
+\bibitem{winpcaporg} WinPcap: News, Riverbed Technology (2010), https://www.winpcap.org/misc/copyright.htm [Accessed 26.02.2020]
+\bibitem{tcpdumporg} Van Jacobson, C. Leres, S. McCanne,tcpdump.org (26.02.2020) https://www.tcpdump.org/manpages/tcpdump.1.html [Accessed 27.02.2020]
+\bibitem{goyal2017} P. Goyal, A. Goyal (2017), Comparative study of two most popular packet sniffing tools-Tcpdump and Wireshark
+\bibitem{asrodiapatel2012} P. Asrodia, H. Patel (2012). Analysis  of  Various  Packet  Sniffing  Tools  for Network  Monitoring  and  Analysis, ISSN  No.  (Online)  :  2277-2626
+\bibitem{suribatra2012} S. Suri, V. Batra, Comparative Study of Network Monitoring Tools, International Journal ofInnovative Technology and Exploring Engineering (IJITEE)ISSN: 2278-3075,Volume-1, Issue-3, August 2012
+\bibitem{firewallcx} http://www.firewall.cx/images/stories/review-capsa-enterprisev7-7.jpg [Accessed 26.02.2020]
+\bibitem{etherapewiki} https://upload.wikimedia.org/wikipedia/commons/a/ae/Etherape-gui.png [Accessed 25.02.2020]
 \bibitem{Nb2015} Moustafa, N. (2015). The UNSW-NB15 Dataset Description. [online] Available at: \url{https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/} [Accessed 22 Feb. 2020]
 \bibitem{Ids2018} Communications Security Establishment (CSE) and Canadian Institute for Cybersecurity (CIC) (2018). CSE-CIC-IDS2018 on AWS. [online] Available at: \url{https://www.unb.ca/cic/datasets/ids-2018.html} [Accessed 22 Feb. 2020].
 \bibitem{vasquez2015} Vázquez Iglesias, F. and Zseby, T. (2015). Analysis of network traffic features for anomaly detection. Machine Learning, vol. 101, 2015.
@@ -341,11 +348,6 @@ The quality of a dataset is generally crucial for the performance of machine lea
 \bibitem{abad2003} Abad, C. and Taylor, J. and Sengul, C.  and Yurcik, W. and Zhou, Y. and Rowe, K. (2003). Log correlation for intrusion detection: a proof of concept. 19th Annual Computer Security Applications Conference, 2003. Proceedings., pp. 255–264, Dec 2003.
 \bibitem{creech2014} Creech, G. and Hu, J. (2014). A semantic approach to host-based intrusion detection systems using contiguous and discontiguous system call patterns. IEEE Transactions on Computers, vol. 63, no. 4, pp. 807-819, April 2014.
 \bibitem{bagui2017} Bagui, S. and Fang, X. and Kalaimannan, E. and Bagui, S. C. and Sheehan, J. (2017). Comparison of machine-learning algorithms for classification of vpn network traffic flow using time-related features. Journal of Cyber Security Technology, vol. 1, no. 2, pp. 108–126, 2017.
-\bibitem{tcpdumporg} Van Jacobson, C. Leres, S. McCanne,tcpdump.org (26.02.2020) https://www.tcpdump.org/manpages/tcpdump.1.html [Accessed 27.02.2020]
-\bibitem{asrodiapatel2012} P. Asrodia, H. Patel (2012). Analysis  of  Various  Packet  Sniffing  Tools  for Network  Monitoring  and  Analysis, ISSN  No.  (Online)  :  2277-2626
-\bibitem{suribatra2012} S. Suri, V. Batra, Comparative Study of Network Monitoring Tools, International Journal ofInnovative Technology and Exploring Engineering (IJITEE)ISSN: 2278-3075,Volume-1, Issue-3, August 2012
-\bibitem{goyal2017} P. Goyal, A. Goyal (2017), Comparative study of two most popular packet sniffing tools-Tcpdump and Wireshark
-\bibitem{firewallcx} http://www.firewall.cx/images/stories/review-capsa-enterprisev7-7.jpg [Accessed 26.02.2020]
 \end{thebibliography}
 
 
