@@ -1,3 +1,4 @@
+* Install VirtualBox, vagrant and ansible
 * Run 'vagrant up'
 * Install openvpn on your client
 * Run 'sudo openvpn client.ovpn' to connect to gns3 server
