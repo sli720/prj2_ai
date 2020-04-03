@@ -1,0 +1,47 @@
+---
+# - name: download gns3 installer
+#   get_url:
+#     url: https://raw.githubusercontent.com/GNS3/gns3-server/master/scripts/remote-install.sh
+#     dest: /tmp/gns3-remote-install.sh
+#     mode: '0744'
+
+- name: check if gns3 installed
+  stat:
+      path: /usr/share/gns3
+  register: gns3_installed
+
+- name: install gns3
+  shell: ./gns3-remote-install.sh --with-openvpn --with-iou --with-i386-repository
+  args:
+    chdir: /tmp
+  when: gns3_installed is not defined
+
+- name: change vpn address
+  lineinfile:
+    path: /root/client.ovpn
+    regexp: '^remote'
+    line: "remote 127.0.0.1 1194 tcp"
+
+- name: change udp to tcp
+  lineinfile:
+    path: /etc/openvpn/udp1194.conf
+    regexp: '^proto'
+    line: "proto tcp"
+
+- name: start and enable openvpn
+  service:
+    name: openvpn
+    state: started
+    enabled: yes
+
+- name: start and enable gns3
+  service:
+    name: gns3
+    state: started
+    enabled: yes
+
+- name: copy vpn configuration
+  fetch:
+    src: /root/client.ovpn
+    dest: ./
+    flat: yes
