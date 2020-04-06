@@ -1,9 +1,9 @@
 ---
-# - name: download gns3 installer
-#   get_url:
-#     url: https://raw.githubusercontent.com/GNS3/gns3-server/master/scripts/remote-install.sh
-#     dest: /tmp/gns3-remote-install.sh
-#     mode: '0744'
+- name: download gns3 installer
+  get_url:
+    url: https://raw.githubusercontent.com/GNS3/gns3-server/master/scripts/remote-install.sh
+    dest: /tmp/gns3-remote-install.sh
+    mode: '0744'
 
 - name: check if gns3 installed
   stat:
