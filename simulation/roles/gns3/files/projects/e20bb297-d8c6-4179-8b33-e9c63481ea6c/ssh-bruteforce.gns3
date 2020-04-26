@@ -114,7 +114,7 @@
         ],
         "nodes": [
             {
-                "compute_id": "vm",
+                "compute_id": "local",
                 "console": 5004,
                 "console_auto_start": false,
                 "console_type": "none",
@@ -194,7 +194,7 @@
                 "z": 1
             },
             {
-                "compute_id": "vm",
+                "compute_id": "local",
                 "console": null,
                 "console_auto_start": false,
                 "console_type": "none",
@@ -258,7 +258,7 @@
                 "z": 1
             },
             {
-                "compute_id": "vm",
+                "compute_id": "local",
                 "console": 5002,
                 "console_auto_start": false,
                 "console_type": "telnet",
@@ -300,7 +300,7 @@
                 "z": 1
             },
             {
-                "compute_id": "vm",
+                "compute_id": "local",
                 "console": 5000,
                 "console_auto_start": false,
                 "console_type": "telnet",
