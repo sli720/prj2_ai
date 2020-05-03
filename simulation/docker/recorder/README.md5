@@ -1,0 +1,7 @@
+Start your Docker containers or Docker Compose suite in the normal way.
+
+Then start the container to capture network traffic:
+ $ docker run --rm --net=host -v /mnt/packet-data:/packets.pcap kaazing/tcpdump
+
+The container will start recording traffic from interface eth0 including ethernet header. The recording will stop
+when size of .pcap-file reches 1GB.
