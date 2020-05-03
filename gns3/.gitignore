@@ -1,0 +1,4 @@
+*.ovpn
+*output
+
+!.gitignore

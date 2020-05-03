@@ -1,0 +1,47 @@
+---
+- name: start lab
+  collections:
+    - davidban77.gns3
+  gns3_project:
+    url: "{{ gns3_url }}"
+    state: opened
+    project_name: "{{ project }}"
+  become: no
+  delegate_to: localhost
+
+- name: stop nodes
+  collections:
+    - davidban77.gns3
+  gns3_project:
+    url: "{{ gns3_url }}"
+    state: opened
+    project_name: "{{ project }}"
+    nodes_state: stopped
+  become: no
+  delegate_to: localhost
+
+- name: start nodes
+  collections:
+    - davidban77.gns3
+  gns3_project:
+    url: "{{ gns3_url }}"
+    state: opened
+    project_name: "{{ project }}"
+    nodes_state: started
+  become: no
+  delegate_to: localhost
+
+- name: Wait 
+  pause:
+    minutes: "{{ duration }}"
+
+- name: stop nodes
+  collections:
+    - davidban77.gns3
+  gns3_project:
+    url: "{{ gns3_url }}"
+    state: opened
+    project_name: "{{ project }}"
+    nodes_state: stopped
+  become: no
+  delegate_to: localhost

@@ -1,0 +1,11 @@
+---
+- hosts: gns3_servers
+  remote_user: mcs20-paai
+  become: yes
+  vars:
+    gns3_url: http://172.16.253.1
+    project: scenario1
+    duration: 10
+  roles:
+    - simulation
+    - extraction
