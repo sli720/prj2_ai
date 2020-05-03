@@ -288,7 +288,7 @@
                     "environment": null,
                     "extra_hosts": null,
                     "extra_volumes": [],
-                    "image": "bgally/ubuntu:latest",
+                    "image": "cs19m032/ssh-server:latest",
                     "start_command": null,
                     "usage": ""
                 },
@@ -330,7 +330,7 @@
                     "environment": "",
                     "extra_hosts": "",
                     "extra_volumes": [],
-                    "image": "bgally/kali-ssh:latest",
+                    "image": "cs19m032/ssh-bruteforce:latest",
                     "start_command": null,
                     "usage": ""
                 },
