@@ -3,4 +3,4 @@
   remote_user: mcs20-paai
   become: yes
   roles:
-    - gns3
+    - server

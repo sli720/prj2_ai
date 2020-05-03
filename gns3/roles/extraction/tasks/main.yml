@@ -1,0 +1,49 @@
+- name: determine project path
+  find:
+    paths: /opt/gns3/projects/
+    file_type: file
+    patterns: "{{ project }}.gns3"
+    recurse: yes
+  register: find_output
+
+- name: register project path
+  set_fact: project_path="{{ find_output.files[0].path.split(project)[0] | lower }}"
+
+- name: determine pcap path
+  find:
+    paths: "{{ project_path }}"
+    file_type: directory
+    patterns: '*packet-data'
+    recurse: yes
+  register: find_output
+
+- name: register pcap path
+  set_fact: pcap_path="{{ find_output.files[0].path }}"
+
+- name: determine attackers
+  shell: cat "{{ project_path }}/attackers.txt"
+  register: cat_output
+
+- name: register attackers
+  set_fact: attackers="{{ cat_output.stdout }}"
+
+- name: run extraction
+  docker_container:
+    name: extractor
+    image: cs19m032/extractor
+    volumes:
+      - "{{ pcap_path }}:/mnt/packet-data"
+    env:
+      ATTACKERS: "{{ attackers }}"
+    auto_remove: yes
+    detach: no
+
+- name: Download simulation output
+  fetch:
+    src: "{{ pcap_path }}/{{ item }}"
+    dest: "output/{{ project }}/{{ item }}"
+    flat: yes
+  with_items:
+    - packets.pcap
+    - packets.pcap_Flow.csv
+

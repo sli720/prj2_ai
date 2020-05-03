@@ -34,10 +34,17 @@
     state: started
     enabled: yes
 
+- name: copy gns3 projects
+  copy:
+    src: projects
+    dest: /opt/gns3
+    owner: gns3
+    group: gns3
+
 - name: start and enable gns3
   service:
     name: gns3
-    state: started
+    state: restarted
     enabled: yes
 
 - name: copy vpn configuration
@@ -45,3 +52,12 @@
     src: /root/client.ovpn
     dest: ./
     flat: yes
+
+- name: install pip
+  apt:
+    name: python3-pip
+    state: present
+
+- name: install python docker
+  pip:
+    name: docker
