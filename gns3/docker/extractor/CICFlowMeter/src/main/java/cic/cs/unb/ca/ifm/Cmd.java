@@ -67,24 +67,16 @@ public class Cmd {
             logger.info("Please supply the attacks string (labels separated by ':')!");
             return;
         }
-        Label[] labels = Label.getLabelsFromAttacksString(args[2]);
+        Label attackTypes[] = Label.getAttackTypeLabels(args[2]);
         logger.info("You select: {}",pcapPath);
         logger.info("Out folder: {}",outPath);
-        logger.info("Labels: {}", Arrays.toString(labels));
+        logger.info("Attack Types: {}", Arrays.toString(attackTypes));
 
-
-        for(Label label : labels) {
-            File pcapFile = new File(in, label.toString() + ".pcap");
-            if (!pcapFile.isFile()) {
-                logger.info("{} doesn't exist or is not a file!", pcapFile);
-                return;
-            }
-        }
-        readPcapFiles(in, labels, outPath,flowTimeout,activityTimeout);
+        readPcapFiles(in, attackTypes, outPath,flowTimeout,activityTimeout);
 }
 
-    private static void readPcapFiles(File inDir, Label[] labels, String outPath, long flowTimeout, long activityTimeout) {
-        if(inDir==null || labels==null || outPath==null ) {
+    private static void readPcapFiles(File inDir, Label[] attackTypes, String outPath, long flowTimeout, long activityTimeout) {
+        if(inDir==null || attackTypes==null || outPath==null ) {
             return;
         }
         String fileName = "features";
@@ -105,19 +97,29 @@ public class Cmd {
         flowGen.addFlowListener(new FlowListener(fileName,outPath));
         boolean readIP6 = false;
         boolean readIP4 = true;
-        Map<Label, PacketReader> packetReaders = new HashMap<>();
-        Map<Label, BasicPacketInfo> nextPackets = new HashMap<>();
-        for(Label label : labels) {
-            PacketReader packetReader = new PacketReader(new File(inDir, label.toString() + ".pcap").getPath(), readIP4, readIP6);
-            packetReaders.put(label, packetReader);
-            try {
-                nextPackets.put(label, packetReader.nextPacket());
-            }catch(PcapClosedException e) {
-                // Pcap file seems to be empty, so we can ignore it
+        Map<PacketReader, Label> packetReaderLabels = new HashMap<>();
+        Map<PacketReader, BasicPacketInfo> nextPackets = new HashMap<>();
+        File[] pcapFiles = inDir.listFiles(file -> file.isFile() && file.getName().endsWith(".pcap"));
+        if(pcapFiles != null) {
+            for (File pcapFile : pcapFiles) {
+                // Use BENIGN as default, if no attack type label matches
+                Label label = Label.BENIGN;
+                for (Label attackType : attackTypes) {
+                    if(pcapFile.getName().toLowerCase().startsWith(attackType.toString().toLowerCase())) {
+                        label = attackType;
+                        break;
+                    }
+                }
+                PacketReader packetReader = new PacketReader(pcapFile.getPath(), readIP4, readIP6);
+                packetReaderLabels.put(packetReader, label);
+                logger.info("Opened file " + pcapFile + " (Label: " + label + ')');
+                try {
+                    nextPackets.put(packetReader, packetReader.nextPacket());
+                } catch (PcapClosedException e) {
+                    // Pcap file seems to be empty, so we can ignore it
+                }
             }
         }
-
-        System.out.println(String.format("Working on... %s",fileName));
 
         int nValid=0;
         int nTotal=0;
@@ -130,20 +132,19 @@ public class Cmd {
             System.out.print("Working on "+ inputFile+" "+ animationChars[i] +"\r");*/
 
             // First find out which pcap file contains the next packet according to timestamp
-            Label nextLabel = null;
+            PacketReader nextPacketReader = null;
             long nextTimestamp = Long.MAX_VALUE;
-            for(Map.Entry<Label, BasicPacketInfo> nextPacket : nextPackets.entrySet()) {
+            for(Map.Entry<PacketReader, BasicPacketInfo> nextPacket : nextPackets.entrySet()) {
                 if(nextPacket.getValue().getTimeStamp() <= nextTimestamp) {
                     nextTimestamp = nextPacket.getValue().getTimeStamp();
-                    nextLabel = nextPacket.getKey();
+                    nextPacketReader = nextPacket.getKey();
                 }
             }
 
             // Now add that packet to the corresponding flow (or create a new flow if required)
-            flowGen.addPacket(nextLabel, nextPackets.get(nextLabel));
+            flowGen.addPacket(packetReaderLabels.get(nextPacketReader), nextPackets.get(nextPacketReader));
 
             // Then read the new "next" packet from that pcap file
-            PacketReader nextPacketReader = packetReaders.get(nextLabel);
             BasicPacketInfo nextPacket = null;
             // Continue to read until the next packet is a valid packet (i.e. not null)
             while(nextPacket == null) {
@@ -151,13 +152,13 @@ public class Cmd {
                     nextPacket = nextPacketReader.nextPacket();
                 }catch(PcapClosedException e) {
                     // We read all packets of that pcap file
-                    nextPackets.remove(nextLabel);
+                    nextPackets.remove(nextPacketReader);
                     break;
                 }
                 nTotal++;
                 if (nextPacket != null) {
                     // If we found a valid packet, put it into the next packet map
-                    nextPackets.put(nextLabel, nextPacket);
+                    nextPackets.put(nextPacketReader, nextPacket);
                     nValid++;
                 } else {
                     nDiscarded++;

@@ -8,13 +8,12 @@ public class Label {
 
     private final String label;
 
-    public static Label[] getLabelsFromAttacksString(final String attacksString) {
+    public static Label[] getAttackTypeLabels(final String attacksString) {
         final String[] splitString = attacksString.split(":");
-        final Label[] labels = new Label[splitString.length + 1];
-        labels[0] = BENIGN;
+        final Label[] labels = new Label[splitString.length];
         int i = 0;
         for(final String label : splitString) {
-            labels[++i] = new Label(label);
+            labels[i++] = new Label(label);
         }
         return labels;
     }
