@@ -6,4 +6,4 @@ VOLUME  [ "/tcpdump" ]
 
 ENTRYPOINT [ "/usr/sbin/tcpdump" ]
 
-CMD [ "-C", "1000", "-v", "-i", "eth0", "-e", "-w", "/mnt/packet-data/packets.pcap" ]
+CMD [ "-C", "1000", "-v", "-i", "eth0", "-e", "$TCPD_EXTFILTER", "-w", "$TCPD_FILENAME" ]
