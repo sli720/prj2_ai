@@ -34,6 +34,13 @@
     state: started
     enabled: yes
 
+- name: copy images
+  copy:
+    src: images
+    dest: /opt/gns3
+    owner: gns3
+    group: gns3
+
 - name: copy gns3 projects
   copy:
     src: projects

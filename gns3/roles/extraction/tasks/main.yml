@@ -12,38 +12,53 @@
 - name: determine pcap path
   find:
     paths: "{{ project_path }}"
-    file_type: directory
-    patterns: '*packet-data'
+    file_type: file
+    patterns: '*pcap'
     recurse: yes
   register: find_output
 
-- name: register pcap path
-  set_fact: pcap_path="{{ find_output.files[0].path }}"
+- name: create temporary extraction directory
+  file:
+    path: "/tmp/{{ project }}/packet-data"
+    state: directory
+    recurse: yes
 
-- name: determine attackers
-  shell: cat "{{ project_path }}/attackers.txt"
+- name: copy pcap files
+  shell: "cp {{ item.path }} /tmp/{{ project }}/packet-data"
+  with_items:
+    - "{{ find_output.files }}"
+  no_log: true
+
+- name: determine attacks
+  shell: cat "{{ project_path }}/attacks.txt"
   register: cat_output
 
-- name: register attackers
-  set_fact: attackers="{{ cat_output.stdout }}"
+- name: register attacks
+  set_fact: attacks="{{ cat_output.stdout }}"
 
 - name: run extraction
   docker_container:
     name: extractor
-    image: cs19m032/extractor
+    image: sli720/extractor
     volumes:
-      - "{{ pcap_path }}:/mnt/packet-data"
+      - "/tmp/{{ project }}/packet-data:/mnt/packet-data"
     env:
-      ATTACKERS: "{{ attackers }}"
+      ATTACKS: "{{ attacks }}"
     auto_remove: yes
     detach: no
 
-- name: Download simulation output
+- name: find simulation output
+  find: 
+    paths: "/tmp/{{ project }}/packet-data"
+    recurse: no
+    patterns: "*.pcap,*.csv"
+  register: files_to_copy
+
+- name: download simulation output
   fetch:
-    src: "{{ pcap_path }}/{{ item }}"
-    dest: "output/{{ project }}/{{ item }}"
+    src: "{{ item.path }}"
+    dest: "output/{{ project }}/{{ item.path.split('/')[4] | lower }}"
     flat: yes
-  with_items:
-    - packets.pcap
-    - packets.pcap_Flow.csv
+  with_items: "{{ files_to_copy.files }}"
+  no_log: true
 
