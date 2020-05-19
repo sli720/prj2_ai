@@ -97,6 +97,9 @@ public class Cmd {
         flowGen.addFlowListener(new FlowListener(fileName,outPath));
         boolean readIP6 = false;
         boolean readIP4 = true;
+        int nValid=0;
+        int nTotal=0;
+        int nDiscarded = 0;
         Map<PacketReader, Label> packetReaderLabels = new HashMap<>();
         Map<PacketReader, BasicPacketInfo> nextPackets = new HashMap<>();
         File[] pcapFiles = inDir.listFiles(file -> file.isFile() && file.getName().endsWith(".pcap"));
@@ -114,16 +117,23 @@ public class Cmd {
                 packetReaderLabels.put(packetReader, label);
                 logger.info("Opened file " + pcapFile + " (Label: " + label + ')');
                 try {
-                    nextPackets.put(packetReader, packetReader.nextPacket());
+                    BasicPacketInfo nextPacket = packetReader.nextPacket();
+                    // Continue to read until the next packet is a valid packet (i.e. not null)
+                    while(nextPacket == null) {
+                        nTotal++;
+                        nDiscarded++;
+                        nextPacket = packetReader.nextPacket();
+                    }
+                    nTotal++;
+                    nValid++;
+                    nextPackets.put(packetReader, nextPacket);
                 } catch (PcapClosedException e) {
+                    logger.warn("Found no valid packet in " + pcapFile);
                     // Pcap file seems to be empty, so we can ignore it
                 }
             }
         }
 
-        int nValid=0;
-        int nTotal=0;
-        int nDiscarded = 0;
         long start = System.currentTimeMillis();
         int i=0;
         // Continue to read until all pcap files have been read completely
