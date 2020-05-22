@@ -1069,6 +1069,189 @@ public class BasicFlow {
 		}
 		return nonBenignLabelWithHighestCount != null ? nonBenignLabelWithHighestCount.toString() : Label.BENIGN.toString();
     }
+
+    public String dumpFeature(FlowFeature feature) {
+		switch(feature) {
+			case fid:
+				return flowId;
+			case src_ip:
+				return FormatUtils.ip(src);
+			case src_port:
+				return String.valueOf(getSrcPort());
+			case dst_ip:
+				return FormatUtils.ip(dst);
+			case dst_pot:
+				return String.valueOf(getDstPort());
+			case prot:
+				return String.valueOf(getProtocol());
+			case tstp:
+				return DateFormatter.convertMilliseconds2String(flowStartTime/1000L, "dd/MM/yyyy hh:mm:ss a");
+			case fl_dur:
+				return String.valueOf(flowLastSeen - flowStartTime);
+			case tot_fw_pkt:
+				return String.valueOf(fwdPktStats.getN());
+			case tot_bw_pkt:
+				return String.valueOf(bwdPktStats.getN());
+			case tot_l_fw_pkt:
+				return String.valueOf(fwdPktStats.getSum());
+			case tot_l_bw_pkt:
+				return String.valueOf(bwdPktStats.getSum());
+			case fw_pkt_l_max:
+				return fwdPktStats.getN() > 0L ? String.valueOf(fwdPktStats.getMax()) : "0";
+			case fw_pkt_l_min:
+				return fwdPktStats.getN() > 0L ? String.valueOf(fwdPktStats.getMin()) : "0";
+			case fw_pkt_l_avg:
+				return fwdPktStats.getN() > 0L ? String.valueOf(fwdPktStats.getMean()) : "0";
+			case fw_pkt_l_std:
+				return fwdPktStats.getN() > 0L ? String.valueOf(fwdPktStats.getStandardDeviation()) : "0";
+			case bw_pkt_l_max:
+				return bwdPktStats.getN() > 0L ? String.valueOf(bwdPktStats.getMax()) : "0";
+			case bw_pkt_l_min:
+				return bwdPktStats.getN() > 0L ? String.valueOf(bwdPktStats.getMin()) : "0";
+			case bw_pkt_l_avg:
+				return bwdPktStats.getN() > 0L ? String.valueOf(bwdPktStats.getMean()) : "0";
+			case bw_pkt_l_std:
+				return bwdPktStats.getN() > 0L ? String.valueOf(bwdPktStats.getStandardDeviation()) : "0";
+			case fl_byt_s:
+				return String.valueOf(((double)(forwardBytes+backwardBytes))/((double)(flowLastSeen - flowStartTime)/1000000L));
+			case fl_pkt_s:
+				return String.valueOf(((double)packetCount())/((double)(flowLastSeen - flowStartTime)/1000000L));
+			case fl_iat_avg:
+				return String.valueOf(flowIAT.getMean());
+			case fl_iat_std:
+				return String.valueOf(flowIAT.getStandardDeviation());
+			case fl_iat_max:
+				return String.valueOf(flowIAT.getMax());
+			case fl_iat_min:
+				return String.valueOf(flowIAT.getMin());
+			case fw_iat_tot:
+				return this.forward.size() > 1 ? String.valueOf(forwardIAT.getSum()) : "0";
+			case fw_iat_avg:
+				return this.forward.size() > 1 ? String.valueOf(forwardIAT.getMean()) : "0";
+			case fw_iat_std:
+				return this.forward.size() > 1 ? String.valueOf(forwardIAT.getStandardDeviation()) : "0";
+			case fw_iat_max:
+				return this.forward.size() > 1 ? String.valueOf(forwardIAT.getMax()) : "0";
+			case fw_iat_min:
+				return this.forward.size() > 1 ? String.valueOf(forwardIAT.getMin()) : "0";
+			case bw_iat_tot:
+				return this.backward.size() > 1 ? String.valueOf(backwardIAT.getSum()) : "0";
+			case bw_iat_avg:
+				return this.backward.size() > 1 ? String.valueOf(backwardIAT.getMean()) : "0";
+			case bw_iat_std:
+				return this.backward.size() > 1 ? String.valueOf(backwardIAT.getStandardDeviation()) : "0";
+			case bw_iat_max:
+				return this.backward.size() > 1 ? String.valueOf(backwardIAT.getMax()) : "0";
+			case bw_iat_min:
+				return this.backward.size() > 1 ? String.valueOf(backwardIAT.getMin()) : "0";
+			case fw_psh_flag:
+				return String.valueOf(fPSH_cnt);
+			case bw_psh_flag:
+				return String.valueOf(bPSH_cnt);
+			case fw_urg_flag:
+				return String.valueOf(fURG_cnt);
+			case bw_urg_flag:
+				return String.valueOf(bURG_cnt);
+			case fw_hdr_len:
+				return String.valueOf(fHeaderBytes);
+			case bw_hdr_len:
+				return String.valueOf(bHeaderBytes);
+			case fw_pkt_s:
+				return String.valueOf(getfPktsPerSecond());
+			case bw_pkt_s:
+				return String.valueOf(getbPktsPerSecond());
+			case pkt_len_min:
+				return this.forward.size() > 0 || this.backward.size() > 0 ? String.valueOf(flowLengthStats.getMin()) : "0";
+			case pkt_len_max:
+				return this.forward.size() > 0 || this.backward.size() > 0 ? String.valueOf(flowLengthStats.getMax()) : "0";
+			case pkt_len_avg:
+				return this.forward.size() > 0 || this.backward.size() > 0 ? String.valueOf(flowLengthStats.getMean()) : "0";
+			case pkt_len_std:
+				return this.forward.size() > 0 || this.backward.size() > 0 ? String.valueOf(flowLengthStats.getStandardDeviation()) : "0";
+			case pkt_len_var:
+				return this.forward.size() > 0 || this.backward.size() > 0 ? String.valueOf(flowLengthStats.getVariance()) : "0";
+			case fin_cnt:
+				return String.valueOf(flagCounts.get("FIN").value);
+			case syn_cnt:
+				return String.valueOf(flagCounts.get("SYN").value);
+			case rst_cnt:
+				return String.valueOf(flagCounts.get("RST").value);
+			case pst_cnt:
+				return String.valueOf(flagCounts.get("PSH").value);
+			case ack_cnt:
+				return String.valueOf(flagCounts.get("ACK").value);
+			case urg_cnt:
+				return String.valueOf(flagCounts.get("URG").value);
+			case cwe_cnt:
+				return String.valueOf(flagCounts.get("CWR").value);
+			case ece_cnt:
+				return String.valueOf(flagCounts.get("ECE").value);
+			case down_up_ratio:
+				return String.valueOf(getDownUpRatio());
+			case pkt_size_avg:
+				return String.valueOf(getAvgPacketSize());
+			case fw_seg_avg:
+				return String.valueOf(fAvgSegmentSize());
+			case bw_seg_avg:
+				return String.valueOf(bAvgSegmentSize());
+			case fw_byt_blk_avg:
+				return String.valueOf(fAvgBytesPerBulk());
+			case fw_pkt_blk_avg:
+				return String.valueOf(fAvgPacketsPerBulk());
+			case fw_blk_rate_avg:
+				return String.valueOf(fAvgBulkRate());
+			case bw_byt_blk_avg:
+				return String.valueOf(fAvgBytesPerBulk());
+			case bw_pkt_blk_avg:
+				return String.valueOf(bAvgPacketsPerBulk());
+			case bw_blk_rate_avg:
+				return String.valueOf(bAvgBulkRate());
+			case subfl_fw_pkt:
+				return String.valueOf(getSflow_fpackets());
+			case subfl_fw_byt:
+				return String.valueOf(getSflow_fbytes());
+			case subfl_bw_pkt:
+				return String.valueOf(getSflow_bpackets());
+			case subfl_bw_byt:
+				return String.valueOf(getSflow_bbytes());
+			case fw_win_byt:
+				return String.valueOf(Init_Win_bytes_forward);
+			case bw_win_byt:
+				return String.valueOf(Init_Win_bytes_backward);
+			case Fw_act_pkt:
+				return String.valueOf(Act_data_pkt_forward);
+			case fw_seg_min:
+				return String.valueOf(min_seg_size_forward);
+			case atv_avg:
+				return this.flowActive.getN() > 0 ? String.valueOf(flowActive.getMean()) : "0";
+			case atv_std:
+				return this.flowActive.getN() > 0 ? String.valueOf(flowActive.getStandardDeviation()) : "0";
+			case atv_max:
+				return this.flowActive.getN() > 0 ? String.valueOf(flowActive.getMax()) : "0";
+			case atv_min:
+				return this.flowActive.getN() > 0 ? String.valueOf(flowActive.getMin()) : "0";
+			case idl_avg:
+				return this.flowIdle.getN() > 0 ? String.valueOf(flowIdle.getMean()) : "0";
+			case idl_std:
+				return this.flowIdle.getN() > 0 ? String.valueOf(flowIdle.getStandardDeviation()) : "0";
+			case idl_max:
+				return this.flowIdle.getN() > 0 ? String.valueOf(flowIdle.getMax()) : "0";
+			case idl_min:
+				return this.flowIdle.getN() > 0 ? String.valueOf(flowIdle.getMin()) : "0";
+			case Label:
+				return getLabel();
+			default:
+				throw new IllegalArgumentException("Feature " + feature + " is not supported");
+		}
+	}
+
+	public String dumpFlowBasedFeatures(List<FlowFeature> features) {
+		StringBuilder dumpBuilder = new StringBuilder();
+		for(FlowFeature feature : features) {
+			dumpBuilder.append(dumpFeature(feature)).append(',');
+		}
+		return dumpBuilder.substring(0, dumpBuilder.length() - 1); // exclude the final ','
+	}
 	
     public String dumpFlowBasedFeaturesEx() {
     	StringBuilder dump = new StringBuilder();

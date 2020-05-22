@@ -68,14 +68,32 @@ public class Cmd {
             return;
         }
         Label attackTypes[] = Label.getAttackTypeLabels(args[2]);
+        List<FlowFeature> features;
+        if (args.length < 4 || args[3].isEmpty()) {
+            logger.info("Extracting all features, because the feature list has not been specified via command-line");
+            features = Arrays.asList(FlowFeature.values());
+        } else {
+            String[] featureNames = args[3].split(",");
+            features = new ArrayList<>(featureNames.length);
+            for(String featureName : featureNames) {
+                FlowFeature feature = FlowFeature.getByName(featureName);
+                if(feature != null) {
+                    features.add(feature);
+                } else {
+                    logger.error("Feature {} is not supported!", featureName);
+                }
+            }
+        }
+
         logger.info("You select: {}",pcapPath);
         logger.info("Out folder: {}",outPath);
         logger.info("Attack Types: {}", Arrays.toString(attackTypes));
+        logger.info("Features: {}",features);
 
-        readPcapFiles(in, attackTypes, outPath,flowTimeout,activityTimeout);
+        readPcapFiles(in, attackTypes, outPath,features,flowTimeout,activityTimeout);
 }
 
-    private static void readPcapFiles(File inDir, Label[] attackTypes, String outPath, long flowTimeout, long activityTimeout) {
+    private static void readPcapFiles(File inDir, Label[] attackTypes, String outPath, List<FlowFeature> features, long flowTimeout, long activityTimeout) {
         if(inDir==null || attackTypes==null || outPath==null ) {
             return;
         }
@@ -94,7 +112,8 @@ public class Cmd {
         }
 
         FlowGenerator flowGen = new FlowGenerator(true, flowTimeout, activityTimeout);
-        flowGen.addFlowListener(new FlowListener(fileName,outPath));
+        FlowListener flowListener = new FlowListener(fileName,outPath, features);
+        flowGen.addFlowListener(flowListener);
         boolean readIP6 = false;
         boolean readIP4 = true;
         int nValid=0;
@@ -177,7 +196,7 @@ public class Cmd {
             i++;
         }
 
-        flowGen.dumpLabeledCurrentFlow(saveFileFullPath.getPath(), FlowFeature.getHeader());
+        flowGen.dumpLabeledCurrentFlow(saveFileFullPath.getPath(), flowListener.header, features);
 
         long lines = SwingUtils.countLines(saveFileFullPath.getPath());
 
@@ -203,20 +222,26 @@ public class Cmd {
 
         private String outPath;
 
+        private List<FlowFeature> features;
+        private String header;
+
         private long cnt;
 
-        public FlowListener(String fileName, String outPath) {
+        public FlowListener(String fileName, String outPath, List<FlowFeature> features) {
             this.fileName = fileName;
             this.outPath = outPath;
+            this.features = features;
+            StringBuilder headerBuilder = new StringBuilder();
+            for(FlowFeature feature : features) {
+                headerBuilder.append(feature.getName()).append(',');
+            }
+            header = headerBuilder.substring(0, headerBuilder.length() - 1); // exclude the final ','
         }
 
         @Override
         public void onFlowGenerated(BasicFlow flow) {
 
-            String flowDump = flow.dumpFlowBasedFeaturesEx();
-            List<String> flowStringList = new ArrayList<>();
-            flowStringList.add(flowDump);
-            InsertCsvRow.insert(FlowFeature.getHeader(),flowStringList,outPath,fileName+ FlowMgr.FLOW_SUFFIX);
+            InsertCsvRow.insert(header,Collections.singletonList(flow.dumpFlowBasedFeatures(features)),outPath,fileName+ FlowMgr.FLOW_SUFFIX);
 
             cnt++;
 

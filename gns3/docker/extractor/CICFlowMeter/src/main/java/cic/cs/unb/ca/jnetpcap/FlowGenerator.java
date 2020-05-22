@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import static cic.cs.unb.ca.jnetpcap.Utils.LINE_SEP;
@@ -204,9 +205,13 @@ public class FlowGenerator {
         }
 
         return total;
-    }       
+    }
 
-    public long dumpLabeledCurrentFlow(String fileFullPath,String header) {
+    public long dumpLabeledCurrentFlow(String fileFullPath, String header) {
+        return dumpLabeledCurrentFlow(fileFullPath, header, null);
+    }
+
+    public long dumpLabeledCurrentFlow(String fileFullPath, String header, List<FlowFeature> features) {
         if (fileFullPath == null || header==null) {
             String ex = String.format("fullFilePath=%s,filename=%s", fileFullPath);
             throw new IllegalArgumentException(ex);
@@ -227,7 +232,7 @@ public class FlowGenerator {
 
             for (BasicFlow flow : currentFlows.values()) {
                 if(flow.packetCount()>1) {
-                    output.write((flow.dumpFlowBasedFeaturesEx() + LINE_SEP).getBytes());
+                    output.write(((features != null ? flow.dumpFlowBasedFeatures(features) : flow.dumpFlowBasedFeaturesEx()) + LINE_SEP).getBytes());
                     total++;
                 }else{
 

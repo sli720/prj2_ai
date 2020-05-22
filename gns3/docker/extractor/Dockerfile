@@ -45,4 +45,6 @@ ENTRYPOINT /usr/share/java/bin/java \
 	#The directory where the resulting csv file is stored
 	/mnt/packet-data \
 	#The attack labels (separated by ':') are read from environment variable ATTACKS
-	$ATTACKS
+	$ATTACKS \
+	#The extracted features (separated by ',') are read from environment variable FEATURES
+	"$FEATURES"
