@@ -1,1 +1,1 @@
-ssh-bruteforce
+ssh-bruteforce:bot
