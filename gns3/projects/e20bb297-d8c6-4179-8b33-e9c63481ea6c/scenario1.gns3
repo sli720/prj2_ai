@@ -1256,7 +1256,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "7b5ba77f3dc3cd1058c76b472f77d2424836a2311167aae5ba7c262aed43cbd3",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/ssh-bruteforce.pcap\nTCPD_EXTFILTER=not arp",
+                    "environment": "TCPD_FILENAME=/mnt/packet-data/ssh-bruteforce.pcap\nTCPD_EXTFILTER=not arp and not icmp and not icmp6 and ether[20:2] != 0x2000 and ether[20:2] != 0x6002",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
@@ -1548,7 +1548,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "023147918d193d67a1c118dfae6f08582ec809b9d255330dcec5754ebd09b23f",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/bot.pcap\nTCPD_EXTFILTER=not arp",
+                    "environment": "TCPD_FILENAME=/mnt/packet-data/bot.pcap\nTCPD_EXTFILTER=not arp and not icmp and not icmp6 and ether[20:2] != 0x2000 and ether[20:2] != 0x6002",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
