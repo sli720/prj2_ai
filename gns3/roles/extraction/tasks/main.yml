@@ -36,6 +36,13 @@
 - name: register attacks
   set_fact: attacks="{{ cat_output.stdout }}"
 
+- name: determine features
+  shell: cat "{{ project_path }}/features.txt"
+  register: cat_output
+
+- name: register features
+  set_fact: features="{{ cat_output.stdout}}"
+
 - name: run extraction
   docker_container:
     name: extractor
@@ -44,6 +51,7 @@
       - "/tmp/{{ project }}/packet-data:/mnt/packet-data"
     env:
       ATTACKS: "{{ attacks }}"
+      FEATURES: "{{ features }}"
     auto_remove: yes
     detach: no
 
