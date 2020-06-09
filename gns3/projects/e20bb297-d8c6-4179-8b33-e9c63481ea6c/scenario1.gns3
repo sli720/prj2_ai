@@ -1926,7 +1926,7 @@
                     "environment": "",
                     "extra_hosts": "",
                     "extra_volumes": [],
-                    "image": "http-server:latest",
+                    "image": "sli720/http-server:latest",
                     "start_command": null,
                     "usage": ""
                 },
@@ -2160,7 +2160,7 @@
                     "environment": "URL=http://192.168.0.100\nWORKERS=10\nSOCKETS=10",
                     "extra_hosts": null,
                     "extra_volumes": [],
-                    "image": "dos-goldeneye:latest",
+                    "image": "sli720/dos-goldeneye:latest",
                     "start_command": null,
                     "usage": ""
                 },
