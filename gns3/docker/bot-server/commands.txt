@@ -8,4 +8,6 @@ zip zzz.zip /tmp/zzz/
 upload zzz.zip
 rm -rf /tmp/zzz zzz.zip 5MB.zip
 apt -y remove tor
+download http://ipv4.download.thinkbroadband.com/100MB.zip
+apt -y install curl wget netcat
 
