@@ -2073,7 +2073,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "638128d83a0dda9f830c744e924b050fb61c641f066a547fd19311faed2bd1f5",
-                    "environment": "website=http://speedtest.tele2.net/10GB.zip",
+                    "environment": "website=http://speedtest.tele2.net/10MB.zip",
                     "extra_hosts": "",
                     "extra_volumes": [],
                     "image": "sli720/benign-traffic:latest",
