@@ -2,4 +2,4 @@ FROM alpine
 
 RUN apk add --update --no-cache tcpdump && rm -rf /var/cache/apk/*
 
-CMD /usr/sbin/tcpdump -v -i eth0 -e -w $TCPD_FILENAME $TCPD_EXTFILTER
+CMD /usr/sbin/tcpdump -v -i eth0 -e -w $TCPD_FILENAME "$TCPD_EXTFILTER"
