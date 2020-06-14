@@ -68,12 +68,33 @@ public class Cmd {
             return;
         }
         Label attackTypes[] = Label.getAttackTypeLabels(args[2]);
+        if (args.length < 4) {
+            logger.info("Please supply the ignored ethernet types (separated by ':')!");
+            return;
+        }
+        Set<Integer> ignoredTypes = new HashSet<>();
+        for(String typeString : args[3].split(":")) {
+            if(!typeString.trim().isEmpty()) {
+                Integer type;
+                try {
+                    if (typeString.startsWith("0x")) {
+                        type = Integer.valueOf(typeString.substring(2), 16);
+                    } else {
+                        type = Integer.valueOf(typeString);
+                    }
+                } catch (NumberFormatException e) {
+                    logger.info(typeString + " is not a valid integer!");
+                    return;
+                }
+                ignoredTypes.add(type);
+            }
+        }
         List<FlowFeature> features;
-        if (args.length < 4 || args[3].isEmpty()) {
+        if (args.length < 5 || args[4].isEmpty()) {
             logger.info("Extracting all features, because the feature list has not been specified via command-line");
             features = Arrays.asList(FlowFeature.values());
         } else {
-            String[] featureNames = args[3].split(",");
+            String[] featureNames = args[4].split(",");
             features = new ArrayList<>(featureNames.length);
             for(String featureName : featureNames) {
                 FlowFeature feature = FlowFeature.getByName(featureName);
@@ -88,12 +109,13 @@ public class Cmd {
         logger.info("You select: {}",pcapPath);
         logger.info("Out folder: {}",outPath);
         logger.info("Attack Types: {}", Arrays.toString(attackTypes));
+        logger.info("Ignored Ethernet Types: {}", ignoredTypes);
         logger.info("Features: {}",features);
 
-        readPcapFiles(in, attackTypes, outPath,features,flowTimeout,activityTimeout);
+        readPcapFiles(in, attackTypes, ignoredTypes, outPath, features, flowTimeout, activityTimeout);
 }
 
-    private static void readPcapFiles(File inDir, Label[] attackTypes, String outPath, List<FlowFeature> features, long flowTimeout, long activityTimeout) {
+    private static void readPcapFiles(File inDir, Label[] attackTypes, Set<Integer> ignoredTypes, String outPath, List<FlowFeature> features, long flowTimeout, long activityTimeout) {
         if(inDir==null || attackTypes==null || outPath==null ) {
             return;
         }
@@ -132,7 +154,8 @@ public class Cmd {
                         break;
                     }
                 }
-                PacketReader packetReader = new PacketReader(pcapFile.getPath(), readIP4, readIP6);
+                PacketReader packetReader = new PacketReader(pcapFile.getPath(), readIP4, readIP6,
+                        label == Label.BENIGN ? Collections.emptySet() : ignoredTypes);
                 packetReaderLabels.put(packetReader, label);
                 logger.info("Opened file " + pcapFile + " (Label: " + label + ')');
                 try {

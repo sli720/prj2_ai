@@ -1,5 +1,6 @@
 package cic.cs.unb.ca.jnetpcap;
 
+import com.google.common.collect.ImmutableSet;
 import org.jnetpcap.Pcap;
 import org.jnetpcap.PcapClosedException;
 import org.jnetpcap.PcapHeader;
@@ -16,6 +17,9 @@ import org.jnetpcap.protocol.tcpip.Udp;
 import org.jnetpcap.protocol.vpn.L2TP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class PacketReader {
 
@@ -36,12 +40,14 @@ public class PacketReader {
 	
 	private boolean readIP6;
 	private boolean readIP4;
+	private Set<Integer> ignoredTypes;
 	private String file;
 	
 	public PacketReader(String filename) {
 		super();	
 		this.readIP4 = true;
-		this.readIP6 = false;		
+		this.readIP6 = false;
+		ignoredTypes = Collections.emptySet();
 		this.config(filename);
 	}
 	
@@ -49,9 +55,18 @@ public class PacketReader {
 		super();	
 		this.readIP4 = readip4;
 		this.readIP6 = readip6;
+		ignoredTypes = Collections.emptySet();
 		this.config(filename);
-	}	
-	
+	}
+
+	public PacketReader(String filename, boolean readip4, boolean readip6, Set<Integer> ignoredTypes) {
+		super();
+		this.readIP4 = readip4;
+		this.readIP6 = readip6;
+		this.ignoredTypes = ImmutableSet.copyOf(ignoredTypes);
+		this.config(filename);
+	}
+
 	private void config(String filename){
         file = filename;
 		StringBuilder errbuf = new StringBuilder(); // For any error msgs
@@ -80,25 +95,29 @@ public class PacketReader {
 		 try{
 			 if(pcapReader.nextEx(hdr,buf) == Pcap.NEXT_EX_OK){
 				 packet = new PcapPacket(hdr, buf);
-				 packet.scan(Ethernet.ID);				 
-				 
-				 if(this.readIP4){					 
-					 packetInfo = getIpv4Info(packet);
-					 if (packetInfo == null && this.readIP6){
-					 	packetInfo = getIpv6Info(packet);				 	
-					 }					 
-				 }else if(this.readIP6){
-					 packetInfo = getIpv6Info(packet);
-					 if (packetInfo == null && this.readIP4){
-					 	packetInfo = getIpv4Info(packet);
+				 packet.scan(Ethernet.ID);
+				 Ethernet ethernet = new Ethernet();
+				 packet.getHeader(ethernet);
+				 if(ethernet == null || ignoredTypes.contains(ethernet.type())) {
+					 packetInfo = null;
+				 } else {
+					 if(this.readIP4){
+						 packetInfo = getIpv4Info(packet);
+						 if (packetInfo == null && this.readIP6){
+							 packetInfo = getIpv6Info(packet);
+						 }
+					 } else if(this.readIP6){
+						 packetInfo = getIpv6Info(packet);
+						 if (packetInfo == null && this.readIP4){
+							 packetInfo = getIpv4Info(packet);
+						 }
+					 }
+
+					 if (packetInfo == null){
+						 packetInfo = getVPNInfo(packet);
 					 }
 				 }
-				 
-				 if (packetInfo == null){
-					 packetInfo = getVPNInfo(packet);
-				 }					 
-
-			 }else{
+			 } else{
 				 throw new PcapClosedException();
 			 }
 		 }catch(PcapClosedException e){
