@@ -6,6 +6,7 @@
     gns3_url: http://172.16.253.1
     project: scenario1
     duration: 10
+    pcap: false
   roles:
     - simulation
     - extraction

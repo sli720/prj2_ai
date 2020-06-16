@@ -56,11 +56,20 @@
     detach: no
 
 - name: find simulation output
-  find: 
+  find:
     paths: "/tmp/{{ project }}/packet-data"
     recurse: no
     patterns: "*.pcap,*.csv"
   register: files_to_copy
+  when: pcap == true
+
+- name: find simulation output
+  find: 
+    paths: "/tmp/{{ project }}/packet-data"
+    recurse: no
+    patterns: "*.csv"
+  register: files_to_copy
+  when: pcap == false
 
 - name: download simulation output
   fetch:
