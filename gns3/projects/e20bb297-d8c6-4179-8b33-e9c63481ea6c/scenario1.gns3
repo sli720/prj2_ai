@@ -1131,7 +1131,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "7f08776bef31245f6a89d7ccf9880455d39f177ef7b01216d83e5a0441c4b592",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/ssh-benign.pcap",
+                    "environment": "FILENAME=/mnt/packet-data/ssh-benign.pcap",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
@@ -1239,7 +1239,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "a032d9be1dd0d12fd7b4de0c4094bbfee933cff805936195cc6f28e26cb307bb",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/benign-traffic.pcap",
+                    "environment": "FILENAME=/mnt/packet-data/benign-traffic.pcap",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
@@ -1411,7 +1411,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "cde3dcbd1034a955f70b4fe1ba75839f7b517c20531bfb778f13ee1b95f60f97",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/ssh-bruteforce.pcap",
+                    "environment": "FILENAME=/mnt/packet-data/ssh-bruteforce.pcap\nFILTER=not ip6 and not arp and not icmp and not port 53 and not port 67 and not port 68 and ether[20:2] != 0x2000 and ether proto not 0x6002",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
@@ -1815,7 +1815,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "3bcc16389cb8f7f7b2bf981860ff4c7db26f25a40caea8e985e53b8d5a62b338",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/bot.pcap",
+                    "environment": "FILENAME=/mnt/packet-data/bot.pcap\nFILTER=not ip6 and not arp and not icmp and not port 53 and not port 67 and not port 68 and ether[20:2] != 0x2000 and ether proto not 0x6002",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
@@ -2029,7 +2029,7 @@
                     "console_http_port": 80,
                     "console_resolution": "1024x768",
                     "container_id": "be782a77cc037993cfe57e73368df27d8610549fc2dc15ce58980b2b6453433e",
-                    "environment": "TCPD_FILENAME=/mnt/packet-data/dos-goldeneye.pcap",
+                    "environment": "FILENAME=/mnt/packet-data/dos-goldeneye.pcap\nFILTER=not ip6 and not arp and not icmp and not port 53 and not port 67 and not port 68 and ether[20:2] != 0x2000 and ether proto not 0x6002",
                     "extra_hosts": "",
                     "extra_volumes": [
                         "/mnt/packet-data/"
