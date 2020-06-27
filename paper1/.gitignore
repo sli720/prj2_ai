@@ -1,0 +1,11 @@
+*.aux
+*.log
+*.lol
+*.lof
+*.lot
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+!.gitignore
