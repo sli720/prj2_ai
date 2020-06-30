@@ -46,7 +46,5 @@ ENTRYPOINT /usr/share/java/bin/java \
 	/mnt/packet-data \
 	#The attack labels (separated by ':') are read from environment variable ATTACKS
 	$ATTACKS \
-	#The ignored ethernet types (separated by ':') are read from environment variable IGNORE
-	"$IGNORE" \
 	#The extracted features (separated by ',') are read from environment variable FEATURES
 	"$FEATURES"
