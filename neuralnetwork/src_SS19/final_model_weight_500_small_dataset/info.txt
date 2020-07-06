@@ -1,0 +1,5 @@
+accuracy on trainset:          0.9994763585057229 
+accuracy on testset:           0.9994653284221353
+accuracy on both sets merged:  0.9994741524883775
+
+This model has 451 false positives (IDS alerts) on the full dataset (10 days traffic).

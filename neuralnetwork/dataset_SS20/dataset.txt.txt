@@ -1,0 +1,9 @@
+Das im SS20 erstellte Dataset ist am FH Server abgespeichert. Um darauf zugreifen zu können, 
+bitte Hrn. Dr. Holweg nach den VM-Zugangsdaten fragen (Zugriff von außerhalb der FH nur über VPN).
+
+Das Dataset ist unter folgendem Pfad auffindbar:
+/tmp/scenario1/packet-data/features_Flow.csv
+
+Dabei handelt es sich um ein CSV-File mit einer Dateigröße von 4.10GB.
+
+Zur Weiterverarbeitung (z.B. Erstellung von Train/Testset) den Sourcecode unter src_SS20/ verwenden. 

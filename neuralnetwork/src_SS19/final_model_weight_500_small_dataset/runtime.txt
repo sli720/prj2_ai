@@ -1,0 +1,1 @@
+2,5 Stunden mit 1 GPU

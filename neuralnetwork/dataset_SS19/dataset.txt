@@ -1,0 +1,13 @@
+Die Dokumentation des Papers kann unter folgender URL gefunden werden:
+https://www.unb.ca/cic/datasets/ids-2018.html
+
+Das Dataset selbst kann auf folgende Art und Weise beschaffen werden:
+Zunächst müssen die Original-CSV-Dateien von der AWS-Cloud heruntergeladen werden
+	- AVS CLI installieren (siehe https://aws.amazon.com/de/cli/), 
+	- Eingabe im Kommandozeilen-Interface: „aws s3 cp --no-sign-request "s3://cse-cic-ids2018/Processed Traffic Data for ML Algorithms/" <dest-dir> --recursive“
+	- Dies sind insgesamt 10 Dateien (6.4 GByte). 
+	
+Zur weiteren Info: 
+https://www.researchgate.net/post/How_do_I_get_CSE-CIC-IDS2018_in_CSV_format
+
+Um das Dataset zusammenzufügen, Train-/Testset etc. zu erstellen, den Sourcecode in src_SS19/ verwenden.
