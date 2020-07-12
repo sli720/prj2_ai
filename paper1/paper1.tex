@@ -36,7 +36,8 @@ cs19m031@technikum-wien.at}
 \maketitle
 
 \begin{abstract}
-@Damir
+This paper is a part of a project. It describes the part of automated network packet generation. The generated packets are used to evaluate neural networks in intrusion prevention systems. The challenges in this project include 
+building the infrastructure and connecting individual nodes in the network.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -44,20 +45,18 @@ artificial intelligence, neural networks, computer networks, network security, p
 \end{IEEEkeywords}
 
 \section{Introduction}
-@Damir [1p]
+For a good, respectively successful detection of malicious network traffic using neural networks, the neural network has to be trained well. Therefore a large set of labelled network traffic is necessary. The more attack scenarios there are, the better the differentiation between attacks and normal traffic. Of course, not all possible scenarios can be dealt with here, which is why we have to concentrate on the attacks that occur most often in the real world. This subproject relates to the generation, labelling, distribution and recording of network data and packets. 
 
-\newpage
-test
-\newpage
+The network has to be deliberately kept simple and the different types of attacks have to be treated separately. The infrastructure is considered from scratch and implemented into a network simulation tool called \textit{GNS3}. To make the individual parts dynamic, docker containers are used. This makes it possible to evaluate the individual scenarios separately. The traffic is recorded using the \textit{tcpdump}, and the entire filtered traffic is saved in so-called pcap files. As far as the hardware is concerned, sufficient computing power is required, as well as sufficient storage space to be able to record the traffic. 
+
+The design of these parts are covered in the next two sections. The first part describes the infrastructure to create simulation environments. The second part focuses on the implementation of specific scenarios.
 
 \section{Infrastructure}
-
 This chapter covers the design of an infrastructure which provides a tool for creating generic environments in which specific network scenarios can be simulated to record network packets and extract features with which neural networks inside intrusion prevention systems could be trained and evaluated.
 
 This work is split into four parts. The first part designs the fundamental simulation architecture. The second focuses on the creation of network nodes, followed by the configuration of the network in the third part. The last part covers the automation of the procedure with the help of provioning tools.
 
 \subsection{Designing the architecture}
-
 A simulation network consists of multiple scenarios based on network attacks and benign traffic. In this network, generic hosts can be placed and connected to each other or the internet with the usage of hubs, switches and routers. These hosts reflect attackers and victims or usual clients and servers, as well as recorders. To ensure recorded features can be labeled, recorders are placed on all positions where another kind of attack or network traffic should be recorded. Furthermore, they are able to filter out selected traffic to ensure only the important traffic is recorded. This means network traffic is recorded within multiple files marked as bad or good which serve as input for the data extractor to extract the features and create the dataset to train and test the neural network.
 
 \begin{figure}[htbp]
@@ -66,9 +65,7 @@ A simulation network consists of multiple scenarios based on network attacks and
 \label{principle}
 \end{figure}
 
-Fig.~\ref{principle} shows the design principle. The recorders receive the data through network hubs placed between the attackers and victims or clients and servers and record in pcap files to a central filesystem. The scenario names and filter settings are passed to the recorders as parameters. The recorded files - named after the associated scenario - are then collected and forwarded to the extractor which knows the names of the malicious scenarios and extracts the selected features to a csv file. The extractor is only required once and is not part of the simulation environment. 
-
-\newpage 
+Fig.~\ref{principle} shows the design principle. The recorders receive the data through network hubs placed between the attackers and victims or clients and servers and record in pcap files to a central filesystem. The scenario names and filter settings are passed to the recorders as parameters. The recorded files - named after the associated scenario - are then collected and forwarded to the extractor which knows the names of the malicious scenarios and extracts the selected features to a csv file. The extractor is only required once and is not part of the simulation environment.
 
 \subsection{Creating the nodes}
 
@@ -97,7 +94,7 @@ The configuration of the network, or more precisely the connection between the n
 Once the server runs, a project can be created and the scenarios can be configured via the graphical interface of the GNS3 GUI. It is recommended to setup a VPN to the server to ensure the terminals of the network nodes are reachable remotely without configuring network tunnels. This means it is necessary to connect to the server via VPN before the GUI can reach the server applicaiton.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[scale=0.5]{network.png}}
+\centerline{\includegraphics[scale=0.4]{network.png}}
 \caption{Network example}
 \label{network}
 \end{figure}
@@ -115,7 +112,6 @@ The project is automatically saved to the filesystem and includes all components
 The setup of the network is done through the GUI because the API does not support all features to create network nodes. The project folder can be checked into version control and copied to the server when it is needed. As shown in Fig.~\ref{project}, it consists of the gns3 file which contains all the network configuration in a JSON format. The project-files directory contains additional files which are part of the filesystems of the network nodes, for example the docker containers. The text files are the parameters, which are passed to the extractor to determine the attack names and the features to extract.
 
 \subsection{Automating the procedure}
-
 The automated setup of the server and run of the simulation is done within Anisble playbooks. Therefore, multiple roles are created, one for the setup of the GNS3 server, one for running the network simulation and one for extracting the features. As shown in Fig.~\ref{ansible}, the server role is associated with the setup playbook, while the simulation and extraction roles are used by the run playbook. These playbooks are stored in YAMl files and can be executed with the ansible tools.\footnote{https://docs.ansible.com/ansible/latest/user\_guide/playbooks.html\#working-with-playbooks}  
 
 \begin{figure}[htbp]
@@ -135,6 +131,8 @@ The server can be setup by running the following command:
 ansible-playbook -i hosts setup.yml 
                  --ask-become-pass
 \end{verbatim}
+
+\newpage
 
 Once the GNS3 projects are checked into the Ansible project folder, the simulation can be started with the following command:
 \begin{verbatim}
@@ -281,10 +279,6 @@ ENTRYPOINT  while true; \
 \end{lstlisting}
 
 \section{Conclusion}
-@Damir [0.5p]
-
-\begin{thebibliography}{00}
-\bibitem{b1} zzz
-\end{thebibliography}
+The result of this project can be used in the knowledge as well as in the structure. Due to the dynamic structure of the infrastructure, extensions can be added with little effort. During the implementation of the infrastructure, minor difficulties came up again and again, but these could usually be remedied with a relatively small change. Among other things, difficulties arose in the transfer of environment variables in the individual Docker containers. The other part of this project used this project as the basis, in which the recorded information and packages were evaluated. The successful evaluation showed that both the infrastructure and the individual nodes worked well.
 
 \end{document}
